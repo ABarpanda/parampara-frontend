@@ -7,7 +7,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'https://parampara-backend.vercel.app',
+        target: 'https://parampara-backend-cq7a.onrender.com/',
         changeOrigin: true,
       }
     }
