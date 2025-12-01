@@ -16,39 +16,39 @@ api.interceptors.request.use((config) => {
 
 export const authAPI = {
   login: (email, password) =>
-    api.post('/auth/login', { email, password }),
+    api.post('/api/auth/login', { email, password }),
   register: (email, password, fullName, region) =>
-    api.post('/auth/register', { email, password, fullName, region }),
-  verify: () => api.get('/auth/verify'),
+    api.post('/api/auth/register', { email, password, fullName, region }),
+  verify: () => api.get('/api/auth/verify'),
 };
 
 export const ritualsAPI = {
-  create: (ritual) => api.post('/rituals', ritual),
+  create: (ritual) => api.post('/api/rituals', ritual),
   getAll: (page = 1, limit = 10, filters = {}) =>
-    api.get('/rituals', { params: { page, limit, ...filters } }),
-  getById: (id) => api.get(`/rituals/${id}`),
-  update: (id, ritual) => api.put(`/rituals/${id}`, ritual),
-  delete: (id) => api.delete(`/rituals/${id}`),
-  search: (query) => api.get('/rituals/search', { params: { q: query } }),
+    api.get('/api/rituals', { params: { page, limit, ...filters } }),
+  getById: (id) => api.get(`/api/rituals/${id}`),
+  update: (id, ritual) => api.put(`/api/rituals/${id}`, ritual),
+  delete: (id) => api.delete(`/api/rituals/${id}`),
+  search: (query) => api.get('/api/rituals/search', { params: { q: query } }),
 };
 
 export const usersAPI = {
-  getProfile: (id) => api.get(`/users/${id}`),
-  updateProfile: (id, data) => api.put(`/users/${id}`, data),
-  getMyProfile: () => api.get('/users/me/profile'),
-  updateMyProfile: (data) => api.put('/users/me/profile', data),
+  getProfile: (id) => api.get(`/api/users/${id}`),
+  updateProfile: (id, data) => api.put(`/api/users/${id}`, data),
+  getMyProfile: () => api.get('/api/users/me/profile'),
+  updateMyProfile: (data) => api.put('/api/users/me/profile', data),
 };
 
 export const connectionsAPI = {
-  follow: (userId) => api.post(`/connections/follow/${userId}`),
-  unfollow: (userId) => api.delete(`/connections/follow/${userId}`),
-  getFollowing: () => api.get('/connections/following'),
-  getFollowers: () => api.get('/connections/followers'),
-  getSimilarUsers: () => api.get('/connections/similar'),
+  follow: (userId) => api.post(`/api/connections/follow/${userId}`),
+  unfollow: (userId) => api.delete(`/api/connections/follow/${userId}`),
+  getFollowing: () => api.get('/api/connections/following'),
+  getFollowers: () => api.get('/api/connections/followers'),
+  getSimilarUsers: () => api.get('/api/connections/similar'),
 };
 
 export const categoriesAPI = {
-  getAll: () => api.get('/categories'),
+  getAll: () => api.get('/api/categories'),
 };
 
 export default api;
