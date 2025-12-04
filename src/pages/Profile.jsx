@@ -7,10 +7,13 @@ import { Users, Heart, MapPin, Edit, Trash2 } from 'lucide-react';
 export default function Profile() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  if (!user) {
+    return <div className="p-8 text-center text-slate-600">Loading profile...</div>;
+  } else {console.log(user)}
   const [profile, setProfile] = useState(user);
   const [myRituals, setMyRituals] = useState([]);
-  const [following, setFollowing] = useState([]);
-  const [followers, setFollowers] = useState([]);
+  // const [following, setFollowing] = useState([]);
+  // const [followers, setFollowers] = useState([]);
   const [activeTab, setActiveTab] = useState('rituals');
   const [loading, setLoading] = useState(true);
 
@@ -21,15 +24,16 @@ export default function Profile() {
   const loadProfileData = async () => {
     try {
       setLoading(true);
-      const [ritualsRes, followingRes, followersRes] = await Promise.all([
+      const [ritualsRes] = await Promise.all([
+      // const [ritualsRes, followingRes, followersRes] = await Promise.all([
         ritualsAPI.getAll(1, 100, { userId: user.id }),
-        connectionsAPI.getFollowing(),
-        connectionsAPI.getFollowers()
+        // connectionsAPI.getFollowing(),
+        // connectionsAPI.getFollowers()
       ]);
 
       setMyRituals(ritualsRes.data.rituals);
-      setFollowing(followingRes.data);
-      setFollowers(followersRes.data);
+      // setFollowing(followingRes.data);
+      // setFollowers(followersRes.data);
     } catch (err) {
       console.error('Failed to load profile data:', err);
     } finally {
@@ -72,14 +76,14 @@ export default function Profile() {
               <div className="text-2xl font-bold text-saffron">{myRituals.length}</div>
               <div className="text-sm text-slate-600">Rituals Shared</div>
             </div>
-            <div className="bg-gradient-to-br from-green/10 to-emerald-50 p-4 rounded-lg text-center">
+            {/* <div className="bg-gradient-to-br from-green/10 to-emerald-50 p-4 rounded-lg text-center">
               <div className="text-2xl font-bold text-green">{following.length}</div>
               <div className="text-sm text-slate-600">Following</div>
             </div>
             <div className="bg-gradient-to-br from-navy/10 to-blue-50 p-4 rounded-lg text-center">
               <div className="text-2xl font-bold text-navy">{followers.length}</div>
-              <div className="text-sm text-slate-600">Followers</div>
-            </div>
+              <div className="text-sm text-slate-600">Followers</div> 
+            </div> */}
           </div>
         </div>
 
@@ -163,7 +167,7 @@ export default function Profile() {
               </div>
             )}
 
-            {activeTab === 'following' && (
+            {/* {activeTab === 'following' && (
               <div>
                 {following.length > 0 ? (
                   <div className="space-y-4">
@@ -215,7 +219,7 @@ export default function Profile() {
                   <p className="text-center text-slate-600 py-8">You don't have any followers yet</p>
                 )}
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </div>
