@@ -97,7 +97,7 @@ export default function Explore() {
           </form>
 
           {/* Region Filter */}
-          <div className="flex flex-wrap gap-2">
+          {/* <div className="flex flex-wrap gap-2">
             <button
               onClick={() => {
                 setSelectedRegion('');
@@ -127,7 +127,7 @@ export default function Explore() {
                 {region}
               </button>
             ))}
-          </div>
+          </div> */}
         </div>
 
         {/* Rituals Grid */}

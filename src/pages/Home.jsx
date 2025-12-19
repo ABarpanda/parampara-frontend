@@ -68,7 +68,7 @@ export default function Home() {
         {user && (
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-slate-800 mb-2">Welcome, {user.fullName}!</h2>
-            <p className="text-slate-600">Discover rituals from your community</p>
+            <p className="text-slate-600">Discover your rituals from the community</p>
           </div>
         )}
 
@@ -93,7 +93,7 @@ export default function Home() {
 
                     {user?.id === ritual.userId && (
                       <div className="flex gap-2 ml-4">
-                        <button
+                        {/* <button
                           onClick={() => navigate(`/ritual/${ritual.id}/edit`)}
                           className="flex items-center gap-2 bg-blue-50 text-blue-600 px-3 py-1 rounded-lg hover:bg-blue-100 transition text-sm"
                         >
@@ -106,7 +106,7 @@ export default function Home() {
                         >
                           <Trash2 size={16} />
                           Delete
-                        </button>
+                        </button> */}
                       </div>
                     )}
                   </div>
