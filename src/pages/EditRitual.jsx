@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ritualsAPI } from '../services/api';
+import { ritualsAPI, categoriesAPI } from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function EditRitual() {
@@ -11,6 +11,28 @@ export default function EditRitual() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [categories, setCategories] = useState([]);
+
+  const STATES = [
+      "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", 
+      "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", 
+      "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", 
+      "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", 
+      "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"
+    ];
+
+  useEffect(() => {
+      loadCategories();
+    }, []);
+    
+  const loadCategories = async () => {
+      try {
+        const response = await categoriesAPI.getAll();
+        setCategories(response.data);
+      } catch (err) {
+        console.error('Failed to load categories:', err);
+      }
+    };
 
   const [formData, setFormData] = useState({
     title: "",
@@ -96,84 +118,132 @@ export default function EditRitual() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          name="title"
-          value={formData.title}
-          onChange={handleChange}
-          placeholder="Title"
-          className="w-full border p-3 rounded"
-          required
-        />
+      <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">
+                Ritual Title *
+              </label>
+              <input
+                type="text"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                required
+                placeholder="e.g., Diwali Preparation Ritual"
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent outline-none transition"
+              />
+            </div>
 
-        <textarea
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-          placeholder="Description"
-          rows="4"
-          className="w-full border p-3 rounded"
-          required
-        />
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">
+                Category *
+              </label>
+              <select
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent outline-none transition"
+              >
+                <option value="">Select a category</option>
+                {categories.map(cat => (
+                  <option key={cat.id} value={cat.id}>{cat.name}</option>
+                ))}
+              </select>
+            </div>
 
-        <input
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-          placeholder="Category"
-          className="w-full border p-3 rounded"
-        />
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">
+                Region *
+              </label>
+              <select
+                name="region"
+                value={formData.region || ""}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent outline-none transition"
+              >
+                <option value="" disabled>Select a State</option>
+                {STATES.map((state) => (
+                  <option key={state} value={state}>
+                    {state}
+                  </option>
+                ))}
+                <option value="Diaspora">Diaspora / International</option>
+              </select>
+            </div>
 
-        <input
-          name="region"
-          value={formData.region}
-          onChange={handleChange}
-          placeholder="Region"
-          className="w-full border p-3 rounded"
-        />
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">
+                Description *
+              </label>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                required
+                rows="6"
+                placeholder="Describe your ritual in detail. Include what it is, when it's performed, who participates, and what it means to your family..."
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent outline-none transition"
+              />
+            </div>
 
-        <input
-          name="frequency"
-          value={formData.frequency}
-          onChange={handleChange}
-          placeholder="Frequency"
-          className="w-full border p-3 rounded"
-        />
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">
+                Significance
+              </label>
+              <textarea
+                name="significance"
+                value={formData.significance}
+                onChange={handleChange}
+                rows="3"
+                placeholder="Why is this ritual important to your family? What values does it represent?"
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent outline-none transition"
+              />
+            </div>
 
-        <textarea
-          name="significance"
-          value={formData.significance}
-          onChange={handleChange}
-          placeholder="Significance"
-          rows="3"
-          className="w-full border p-3 rounded"
-        />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  Frequency
+                </label>
+                <select
+                  name="frequency"
+                  value={formData.frequency}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent outline-none transition"
+                >
+                  <option value="Daily">Daily</option>
+                  <option value="Weekly">Weekly</option>
+                  <option value="Monthly">Monthly</option>
+                  <option value="Yearly">Yearly</option>
+                  <option value="Occasional">Occasional</option>
+                </select>
+              </div>
 
-        <input
-          value={formData.tags.join(", ")}
-          onChange={handleTagsChange}
-          placeholder="Tags (comma separated)"
-          className="w-full border p-3 rounded"
-        />
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  Tags (comma-separated)
+                </label>
+                <input
+                  type="text"
+                  name="tags"
+                  value={formData.tags}
+                  onChange={handleChange}
+                  placeholder="e.g., family, festival, cooking, celebration"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent outline-none transition"
+                />
+              </div>
+            </div>
 
-        <div className="flex gap-4">
-          <button
-            type="submit"
-            disabled={saving}
-            className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
-          >
-            {saving ? "Saving..." : "Update Ritual"}
-          </button>
-
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            className="bg-gray-200 px-6 py-2 rounded hover:bg-gray-300"
-          >
-            Cancel
-          </button>
-        </div>
-      </form>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-saffron to-orange-500 text-white font-semibold py-3 rounded-lg hover:shadow-lg transition disabled:opacity-50"
+            >
+              {loading ? 'Publishing...' : 'Publish Ritual'}
+            </button>
+          </form>
     </div>
   );
 }
