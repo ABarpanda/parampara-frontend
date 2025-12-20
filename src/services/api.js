@@ -23,7 +23,7 @@ export const authAPI = {
 
 export const ritualsAPI = {
   create: (ritual) => api.post('/api/rituals', ritual),
-  getAll: (page = 1, limit = 10, filters = {}) =>
+  getAll: (page = 1, limit = 9, filters = {}) =>
     api.get('/api/rituals', { params: { page, limit, ...filters } }),
   getById: (id) => api.get(`/api/rituals/${id}`),
   update: (id, ritual) => api.put(`/api/rituals/${id}`, ritual),

@@ -11,6 +11,7 @@ import CreateRitual from './pages/CreateRitual';
 import RitualDetail from './pages/RitualDetail';
 import Explore from './pages/Explore';
 import Profile from './pages/Profile';
+import EditRitual from './pages/EditRitual';
 
 import './index.css';
 
@@ -27,6 +28,14 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/explore" element={<Explore />} />
               <Route path="/ritual/:id" element={<RitualDetail />} />
+              <Route
+                path="/ritual/:id/edit"
+                element={
+                  <ProtectedRoute>
+                    <EditRitual />
+                  </ProtectedRoute>
+                }
+              />
               <Route
                 path="/create"
                 element={
