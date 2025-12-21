@@ -58,7 +58,7 @@ export default function Profile() {
         <div className="bg-white rounded-lg shadow-lg p-8 mb-6">
           <div className="flex items-center gap-6 mb-6">
             <div className="w-24 h-24 bg-gradient-to-br from-saffron to-orange-500 rounded-full flex items-center justify-center text-white text-4xl font-bold">
-              {user.fullName.charAt(0)}
+              {user.full_name}
             </div>
             <div>
               <h1 className="text-3xl font-bold text-slate-800 mb-2">{user.fullName}</h1>
@@ -100,7 +100,7 @@ export default function Profile() {
             >
               My Rituals ({myRituals.length})
             </button>
-            <button
+            {/* <button
               onClick={() => setActiveTab('following')}
               className={`flex-1 py-4 px-6 font-semibold transition ${
                 activeTab === 'following'
@@ -109,8 +109,8 @@ export default function Profile() {
               }`}
             >
               Following ({following.length})
-            </button>
-            <button
+            </button> */}
+            {/* <button
               onClick={() => setActiveTab('followers')}
               className={`flex-1 py-4 px-6 font-semibold transition ${
                 activeTab === 'followers'
@@ -119,7 +119,7 @@ export default function Profile() {
               }`}
             >
               Followers ({followers.length})
-            </button>
+            </button> */}
           </div>
 
           <div className="p-6">
