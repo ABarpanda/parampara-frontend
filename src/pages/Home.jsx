@@ -126,7 +126,7 @@ export default function Home() {
                   <div className="mt-auto space-y-3">
                     <div className="flex items-center gap-1.5 text-slate-400 text-xs">
                       <MapPin size={14} className="shrink-0" />
-                      <span className="truncate">{ritual.region}</span>
+                      <span className="truncate">{ritual.state}</span>
                     </div>
 
                     <div className="flex flex-wrap gap-2">

@@ -90,7 +90,7 @@ export default function RitualDetail() {
               <h1 className="text-4xl font-bold text-slate-800 mb-2">{ritual.title}</h1>
               <div className="flex items-center gap-2 text-slate-600">
                 <MapPin size={20} />
-                <span>{ritual.region}</span>
+                <span>{ritual.state}</span>
               </div>
             </div>
             {user?.id === ritual.userId && (
