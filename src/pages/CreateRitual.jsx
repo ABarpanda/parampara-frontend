@@ -14,7 +14,7 @@ export default function CreateRitual() {
     description: '',
     category: '',
     tags: '',
-    region: '',
+    state: '',
     significance: '',
     frequency: 'Yearly'
   });
@@ -118,11 +118,11 @@ export default function CreateRitual() {
 
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
-                Region *
+                State *
               </label>
               <select
-                name="region"
-                value={formData.region || ""}
+                name="state"
+                value={formData.state || ""}
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent outline-none transition"

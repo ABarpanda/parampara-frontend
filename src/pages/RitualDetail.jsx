@@ -23,9 +23,7 @@ export default function RitualDetail() {
       setLoading(true);
       const response = await ritualsAPI.getById(id);
       setRitual(response.data);
-      
-      // Load creator info
-      const creatorResponse = await usersAPI.getProfile(response.data.userId);
+      const creatorResponse = await usersAPI.getProfile(response.data.user_id);
       setCreator(creatorResponse.data);
     } catch (err) {
       console.error('Failed to load ritual:', err);
@@ -45,18 +43,18 @@ export default function RitualDetail() {
     }
   };
 
-  const handleFollow = async () => {
-    try {
-      if (isFollowing) {
-        await connectionsAPI.unfollow(ritual.userId);
-      } else {
-        await connectionsAPI.follow(ritual.userId);
-      }
-      setIsFollowing(!isFollowing);
-    } catch (err) {
-      console.error('Failed to follow user:', err);
-    }
-  };
+  // const handleFollow = async () => {
+  //   try {
+  //     if (isFollowing) {
+  //       await connectionsAPI.unfollow(ritual.userId);
+  //     } else {
+  //       await connectionsAPI.follow(ritual.userId);
+  //     }
+  //     setIsFollowing(!isFollowing);
+  //   } catch (err) {
+  //     console.error('Failed to follow user:', err);
+  //   }
+  // };
 
   if (loading) {
     return (
@@ -120,7 +118,7 @@ export default function RitualDetail() {
             <div className="flex items-center justify-between bg-gradient-to-r from-saffron/10 to-green/10 p-4 rounded-lg mb-6">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-saffron rounded-full flex items-center justify-center text-white font-bold">
-                  {creator.fullName.charAt(0)}
+                  {creator.full_name}
                 </div>
                 <div>
                   <h3 className="font-semibold text-slate-800">{creator.fullName}</h3>
@@ -128,16 +126,17 @@ export default function RitualDetail() {
                 </div>
               </div>
               {user?.id !== ritual.userId && user && (
-                <button
-                  onClick={handleFollow}
-                  className={`px-4 py-2 rounded-lg font-semibold transition ${
-                    isFollowing
-                      ? 'bg-slate-200 text-slate-800 hover:bg-slate-300'
-                      : 'bg-saffron text-white hover:bg-orange-500'
-                  }`}
-                >
-                  {isFollowing ? 'Following' : 'Follow'}
-                </button>
+                // <button
+                //   onClick={handleFollow}
+                //   className={`px-4 py-2 rounded-lg font-semibold transition ${
+                //     isFollowing
+                //       ? 'bg-slate-200 text-slate-800 hover:bg-slate-300'
+                //       : 'bg-saffron text-white hover:bg-orange-500'
+                //   }`}
+                // >
+                //   {isFollowing ? 'Following' : 'Follow'}
+                // </button>
+                <></>
               )}
             </div>
           )}
