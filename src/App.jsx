@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './contexts/AuthContext';
 
@@ -12,6 +13,7 @@ import RitualDetail from './pages/RitualDetail';
 import Explore from './pages/Explore';
 import Profile from './pages/Profile';
 import EditRitual from './pages/EditRitual';
+import AboutUs from './pages/AboutUs';
 
 import './index.css';
 
@@ -25,6 +27,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/about" element={<AboutUs />} />
               <Route path="/register" element={<Register />} />
               <Route path="/explore" element={<Explore />} />
               <Route path="/ritual/:id" element={<RitualDetail />} />
@@ -55,6 +58,7 @@ function App() {
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </main>
+          <Footer /> 
         </div>
       </AuthProvider>
     </Router>
