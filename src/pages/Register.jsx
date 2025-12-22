@@ -1,27 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-
-const REGIONS = [
-  'North India',
-  'South India',
-  'East India',
-  'West India',
-  'Northeast India',
-  'Central India',
-  'Diaspora'
-];
+import { statesAPI } from '../services/api';
 
 export default function Register() {
   const [formData, setFormData] = useState({
-    fullName: '',
+    full_name: '',
     email: '',
     password: '',
     confirmPassword: '',
-    region: ''
+    state_name: ''
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [states, setStates] = useState([]);
   const { register } = useAuth();
   const navigate = useNavigate();
 
@@ -29,6 +21,20 @@ export default function Register() {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
+
+  useEffect(() => {
+        loadStates();
+      }, []);
+
+  const loadStates = async () => {
+      try {
+        const response = await statesAPI.getAll();
+        setStates(response.data);
+      } catch (err) {
+        console.error('Failed to load states:', err);
+      }
+    };
+    
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,8 +51,8 @@ export default function Register() {
       await register(
         formData.email,
         formData.password,
-        formData.fullName,
-        formData.region
+        formData.full_name,
+        formData.state_name
       );
       navigate('/');
     } catch (err) {
@@ -77,8 +83,8 @@ export default function Register() {
               </label>
               <input
                 type="text"
-                name="fullName"
-                value={formData.fullName}
+                name="full_name"
+                value={formData.full_name}
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent outline-none transition"
@@ -103,18 +109,20 @@ export default function Register() {
 
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
-                Region
+                State
               </label>
               <select
-                name="region"
-                value={formData.region}
+                name="state_name"
+                value={formData.state_name}
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent outline-none transition"
               >
-                <option value="">Select your region</option>
-                {REGIONS.map(region => (
-                  <option key={region} value={region}>{region}</option>
+                <option value="">Select your state</option>
+                {states.map((state) => (
+                  <option key={state.id} value={state.state_name}>
+                    {state.state_name}
+                  </option>
                 ))}
               </select>
             </div>

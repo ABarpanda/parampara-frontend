@@ -121,8 +121,8 @@ export default function RitualDetail() {
                   {creator.full_name}
                 </div>
                 <div>
-                  <h3 className="font-semibold text-slate-800">{creator.fullName}</h3>
-                  <p className="text-sm text-slate-600">{creator.region}</p>
+                  <h3 className="font-semibold text-slate-800">{creator.full_name}</h3>
+                  <p className="text-sm text-slate-600">{creator.state_name}</p>
                 </div>
               </div>
               {user?.id !== ritual.userId && user && (

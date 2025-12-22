@@ -28,15 +28,15 @@ export default function EditRitual() {
       }
     };
 
-    const loadStates = async () => {
-      try {
-        const response = await statesAPI.getAll();
-        setStates(response.data);
-      } catch (err) {
-        console.error('Failed to load states:', err);
-      }
-    };
-    
+  const loadStates = async () => {
+    try {
+      const response = await statesAPI.getAll();
+      setStates(response.data);
+    } catch (err) {
+      console.error('Failed to load states:', err);
+    }
+  };
+  
   const [formData, setFormData] = useState({
     title: "",
     description: "",
