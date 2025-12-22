@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ritualsAPI, categoriesAPI } from '../services/api';
+import { ritualsAPI, categoriesAPI, statesAPI } from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function EditRitual() {
@@ -11,6 +11,7 @@ export default function EditRitual() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [states, setStates] = useState([]);
   const [categories, setCategories] = useState([]);
 
   const STATES = [
@@ -23,6 +24,7 @@ export default function EditRitual() {
 
   useEffect(() => {
       loadCategories();
+      loadStates();
     }, []);
     
   const loadCategories = async () => {
@@ -34,11 +36,20 @@ export default function EditRitual() {
       }
     };
 
+    const loadStates = async () => {
+      try {
+        const response = await statesAPI.getAll();
+        setStates(response.data);
+      } catch (err) {
+        console.error('Failed to load states:', err);
+      }
+    };
+    
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     category: "",
-    region: "",
+    state: "",
     significance: "",
     frequency: "",
     tags: []
@@ -64,7 +75,7 @@ export default function EditRitual() {
           title: res.data.title || "",
           description: res.data.description || "",
           category: res.data.category || "",
-          region: res.data.region || "",
+          state: res.data.state || "",
           significance: res.data.significance || "",
           frequency: res.data.frequency || "",
           tags: res.data.tags || []
@@ -154,19 +165,19 @@ export default function EditRitual() {
 
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
-                Region *
+                State *
               </label>
               <select
-                name="region"
-                value={formData.region || ""}
+                name="state"
+                value={formData.state || ""}
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent outline-none transition"
               >
                 <option value="" disabled>Select a State</option>
-                {STATES.map((state) => (
-                  <option key={state} value={state}>
-                    {state}
+                {states.map((state) => (
+                  <option key={state.id} value={state.state_name}>
+                    {state.state_name}
                   </option>
                 ))}
                 <option value="Diaspora">Diaspora / International</option>

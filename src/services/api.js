@@ -50,4 +50,8 @@ export const categoriesAPI = {
   getAll: () => api.get('/api/categories'),
 };
 
+export const statesAPI = {
+  getAll: () => api.get('/api/states'),
+};
+
 export default api;
