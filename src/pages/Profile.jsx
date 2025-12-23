@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { usersAPI, connectionsAPI, ritualsAPI } from '../services/api';
-import { Users, Heart, MapPin, Edit, Trash2 } from 'lucide-react';
+import { User, Heart, MapPin, Edit, Trash2 } from 'lucide-react';
 
 export default function Profile() {
   const { user } = useAuth();
@@ -66,8 +66,8 @@ export default function Profile() {
                     className="w-full h-full rounded-full object-cover border-4 border-white shadow-md"
                   />
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-saffron to-orange-500 rounded-full flex items-center justify-center text-white text-4xl font-bold shadow-md">
-                    {user.full_name}
+                  <div className="w-full h-full bg-gradient-to-br from-saffron to-orange-500 rounded-full flex items-center justify-center text-white shadow-md">
+                    <User size={48} strokeWidth={1.5} />
                   </div>
                 )}
               </div>
@@ -77,7 +77,7 @@ export default function Profile() {
               </div>
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-slate-800 mb-2">{user.full_name}</h1>
+              {/* <h1 className="text-3xl font-bold text-slate-800 mb-2">{user.full_name}</h1> */}
               <p className="text-slate-600 flex items-center gap-2 mb-2">
                 <MapPin size={18} />
                 {user.state_name}

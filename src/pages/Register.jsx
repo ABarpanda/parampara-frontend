@@ -9,13 +9,17 @@ export default function Register() {
     email: '',
     password: '',
     confirmPassword: '',
-    state_name: ''
+    state_name: '',
+    region: '',
+    profile_pic: null
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [states, setStates] = useState([]);
   const { register } = useAuth();
   const navigate = useNavigate();
+  const cloudinary = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+  // console.log(cloudinary); // This should now show "dyylsm0ma"
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,8 +27,8 @@ export default function Register() {
   };
 
   useEffect(() => {
-        loadStates();
-      }, []);
+    loadStates();
+  }, []);
 
   const loadStates = async () => {
       try {
@@ -34,7 +38,6 @@ export default function Register() {
         console.error('Failed to load states:', err);
       }
     };
-    
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,17 +51,51 @@ export default function Register() {
     setLoading(true);
 
     try {
+      // 1. Get the URL (will be a string or null)
+      const imageUrl = await uploadProfilePic(formData.profile_pic);
+      console.log(imageUrl);
+      
+      // 2. Pass that URL directly into your register function
       await register(
         formData.email,
         formData.password,
         formData.full_name,
-        formData.state_name
+        formData.state_name,
+        imageUrl
       );
       navigate('/');
     } catch (err) {
       setError(err.message || 'Registration failed');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const uploadProfilePic = async (file) => {
+    // If no file is selected, return null immediately
+    if (!file) return null;
+
+    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+    const profilePicFormData = new FormData();
+    
+    profilePicFormData.append('file', file);
+    profilePicFormData.append('upload_preset', 'parampara'); 
+
+    try {
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+        { method: 'POST', body: profilePicFormData }
+      );
+      
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error?.message || "Cloudinary upload failed");
+      }
+      return data.secure_url; 
+    } catch (err) {
+      console.error("Cloudinary Error:", err);
+      throw err; // Throw so handleSubmit catches it
     }
   };
 
@@ -77,6 +114,7 @@ export default function Register() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Full Name */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
                 Full Name
@@ -92,6 +130,7 @@ export default function Register() {
               />
             </div>
 
+            {/* Email Address */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
                 Email Address
@@ -107,6 +146,30 @@ export default function Register() {
               />
             </div>
 
+            {/* Profile Picture Upload */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">
+                Profile Picture
+              </label>
+              <input
+                type="file"
+                name="profile_pic"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files[0] || null; // Handle cancellation
+                  setFormData(prev => ({ ...prev, profile_pic: file }));
+                }}
+                className="w-full text-sm text-slate-500
+                  file:mr-4 file:py-2 file:px-4
+                  file:rounded-full file:border-0
+                  file:text-sm file:font-semibold
+                  file:bg-saffron/10 file:text-saffron
+                  hover:file:bg-saffron/20
+                  cursor-pointer"
+              />
+            </div>
+
+            {/* State */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
                 State
@@ -127,6 +190,28 @@ export default function Register() {
               </select>
             </div>
 
+            {/* Region Field with Auto-suggest */}
+            {/* <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">
+                Region
+              </label>
+              <input
+                type="text"
+                name="region"
+                list="region-list" // Connects to the datalist below
+                value={formData.region}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent outline-none transition"
+                placeholder="Type or select a region"
+              />
+              <datalist id="region-list">
+                {REGION.map((reg) => (
+                  <option key={reg} value={reg} />
+                ))}
+              </datalist>
+            </div> */}
+            
+            {/* Password */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
                 Password
@@ -142,6 +227,7 @@ export default function Register() {
               />
             </div>
 
+            {/* Confirm Password */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
                 Confirm Password
