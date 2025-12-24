@@ -12,6 +12,7 @@ export default function Explore() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRegion, setSelectedRegion] = useState('');
   const [page, setPage] = useState(1);
+  const [states, setStates] = useState([]);
 
   const REGIONS = [
     'North India',
@@ -152,7 +153,7 @@ export default function Explore() {
                         <p className="text-slate-600 text-sm mb-4 line-clamp-2">{ritual.description}</p>
                       </Link>
 
-                      {user?.id === ritual.userId && (
+                      {user?.id === ritual.user_id && (
                         <div className="flex gap-2 ml-4">
                           <button
                             onClick={() => navigate(`/ritual/${ritual.id}/edit`)}
@@ -174,7 +175,7 @@ export default function Explore() {
 
                     <div className="flex items-center gap-2 mb-3 text-slate-500 text-sm">
                       <MapPin size={16} />
-                      {ritual.region}
+                      {ritual.state}
                     </div>
 
                     <div className="mb-4">

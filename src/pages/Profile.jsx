@@ -57,16 +57,32 @@ export default function Profile() {
         {/* Profile Header */}
         <div className="bg-white rounded-lg shadow-lg p-8 mb-6">
           <div className="flex items-center gap-6 mb-6">
-            <div className="w-24 h-24 bg-gradient-to-br from-saffron to-orange-500 rounded-full flex items-center justify-center text-white text-4xl font-bold">
-              {user.full_name}
+            <div className="flex items-center gap-6">
+              <div className="relative w-24 h-24 shrink-0">
+                {user.profile_pic ? (
+                  <img 
+                    src={user.profile_pic} 
+                    alt={user.full_name}
+                    className="w-full h-full rounded-full object-cover border-4 border-white shadow-md"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-saffron to-orange-500 rounded-full flex items-center justify-center text-white text-4xl font-bold shadow-md">
+                    {user.full_name}
+                  </div>
+                )}
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-slate-800">{user.full_name}</h1>
+                <p className="text-slate-500 text-sm">{user.email}</p>
+              </div>
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-slate-800 mb-2">{user.fullName}</h1>
+              <h1 className="text-3xl font-bold text-slate-800 mb-2">{user.full_name}</h1>
               <p className="text-slate-600 flex items-center gap-2 mb-2">
                 <MapPin size={18} />
-                {user.region}
+                {user.state_name}
               </p>
-              <p className="text-slate-600">Member since {new Date(user.createdAt).toLocaleDateString()}</p>
+              <p className="text-slate-600">Member since {user.created_at}</p>
             </div>
           </div>
 
@@ -177,12 +193,12 @@ export default function Profile() {
                         className="flex items-center justify-between border border-slate-200 rounded-lg p-4"
                       >
                         <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 bg-saffron rounded-full flex items-center justify-center text-white font-bold">
-                            {person.fullName.charAt(0)}
+                            <div className="w-12 h-12 bg-saffron rounded-full flex items-center justify-center text-white font-bold">
+                            {person.full_name.charAt(0)}
                           </div>
                           <div>
-                            <h4 className="font-semibold text-slate-800">{person.fullName}</h4>
-                            <p className="text-sm text-slate-600">{person.region}</p>
+                            <h4 className="font-semibold text-slate-800">{person.full_name}</h4>
+                            <p className="text-sm text-slate-600">{person.state_name}</p>
                           </div>
                         </div>
                       </div>
@@ -205,11 +221,11 @@ export default function Profile() {
                       >
                         <div className="flex items-center gap-4">
                           <div className="w-12 h-12 bg-green rounded-full flex items-center justify-center text-white font-bold">
-                            {person.fullName.charAt(0)}
+                            {person.full_name.charAt(0)}
                           </div>
                           <div>
-                            <h4 className="font-semibold text-slate-800">{person.fullName}</h4>
-                            <p className="text-sm text-slate-600">{person.region}</p>
+                            <h4 className="font-semibold text-slate-800">{person.full_name}</h4>
+                            <p className="text-sm text-slate-600">{person.state_name}</p>
                           </div>
                         </div>
                       </div>
