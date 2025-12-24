@@ -53,7 +53,7 @@ export default function Register() {
     try {
       // 1. Get the URL (will be a string or null)
       const imageUrl = await uploadProfilePic(formData.profile_pic);
-      console.log(imageUrl);
+      // console.log(imageUrl);
       
       // 2. Pass that URL directly into your register function
       await register(
