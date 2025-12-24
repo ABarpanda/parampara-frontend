@@ -34,7 +34,6 @@ export default function Register() {
         console.error('Failed to load states:', err);
       }
     };
-    
 
   const handleSubmit = async (e) => {
     e.preventDefault();

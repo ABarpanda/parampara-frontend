@@ -13,7 +13,7 @@ import RitualDetail from './pages/RitualDetail';
 import Explore from './pages/Explore';
 import Profile from './pages/Profile';
 import EditRitual from './pages/EditRitual';
-import AboutUs from './pages/AboutUs';
+// import AboutUs from './pages/AboutUs';
 
 import './index.css';
 
@@ -27,7 +27,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/about" element={<AboutUs />} />
+              {/* <Route path="/about" element={<AboutUs />} /> */}
               <Route path="/register" element={<Register />} />
               <Route path="/explore" element={<Explore />} />
               <Route path="/ritual/:id" element={<RitualDetail />} />
