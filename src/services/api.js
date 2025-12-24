@@ -36,6 +36,7 @@ export const usersAPI = {
   updateProfile: (id, data) => api.put(`/api/users/${id}`, data),
   getMyProfile: () => api.get('/api/users/me/profile'),
   updateMyProfile: (data) => api.put('/api/users/me/profile', data),
+  deleteProfile: () => api.delete('/api/users/me/delete'),
 };
 
 export const connectionsAPI = {

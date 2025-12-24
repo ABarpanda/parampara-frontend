@@ -57,11 +57,11 @@ export function AuthProvider({ children }) {
     throw new Error(data.message || 'Login failed');
   };
 
-  const register = async (email, password, full_name, state_name) => {
+  const register = async (email, password, full_name, state_name, imageUrl) => {
     const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password, full_name, state_name })
+      body: JSON.stringify({ email, password, full_name, state_name, profile_pic:imageUrl})
     });
     const data = await response.json();
     if (response.ok) {

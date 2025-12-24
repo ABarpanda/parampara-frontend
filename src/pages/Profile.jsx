@@ -2,14 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { usersAPI, connectionsAPI, ritualsAPI } from '../services/api';
-import { Users, Heart, MapPin, Edit, Trash2 } from 'lucide-react';
+import { User, Heart, MapPin, Edit, Trash2 } from 'lucide-react';
 
 export default function Profile() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
-  if (!user) {
-    return <div className="p-8 text-center text-slate-600">Loading profile...</div>;
-  } else {console.log(user)}
   const [profile, setProfile] = useState(user);
   const [myRituals, setMyRituals] = useState([]);
   // const [following, setFollowing] = useState([]);
@@ -18,10 +15,14 @@ export default function Profile() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadProfileData();
-  }, []);
+    if (user) {
+      setProfile(user);
+      loadProfileData();
+    }
+  }, [user]);
 
   const loadProfileData = async () => {
+    if (!user?.id) return; // Guard clause
     try {
       setLoading(true);
       const [ritualsRes] = await Promise.all([
@@ -41,7 +42,12 @@ export default function Profile() {
     }
   };
 
-  const handleDelete = async (ritualId) => {
+  // 4. Loading Guard
+  if (!user) {
+    return <div className="p-8 text-center text-slate-600">Loading profile...</div>;
+  }
+
+  const handleDeleteRitual = async (ritualId) => {
     if (!window.confirm('Are you sure you want to delete this ritual?')) return;
     try {
       await ritualsAPI.delete(ritualId);
@@ -50,6 +56,37 @@ export default function Profile() {
       console.error('Failed to delete ritual:', err);
     }
   };
+
+  const handleEdit = () => {
+    // Navigate to an edit page or open a modal
+    navigate('/profile/edit');
+  };
+
+  const handleDeleteProfile = async () => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete your profile? This action cannot be undone."
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      setLoading(true);
+
+      await usersAPI.deleteProfile();
+
+      logout();
+      navigate('/register', { replace: true });
+
+      alert("Profile deleted successfully.");
+    } catch (err) {
+      alert(
+        err.response?.data?.message || "Failed to delete profile"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-8">
@@ -66,8 +103,8 @@ export default function Profile() {
                     className="w-full h-full rounded-full object-cover border-4 border-white shadow-md"
                   />
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-saffron to-orange-500 rounded-full flex items-center justify-center text-white text-4xl font-bold shadow-md">
-                    {user.full_name}
+                  <div className="w-full h-full bg-gradient-to-br from-saffron to-orange-500 rounded-full flex items-center justify-center text-white shadow-md">
+                    <User size={48} strokeWidth={1.5} />
                   </div>
                 )}
               </div>
@@ -77,12 +114,26 @@ export default function Profile() {
               </div>
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-slate-800 mb-2">{user.full_name}</h1>
+              {/* <h1 className="text-3xl font-bold text-slate-800 mb-2">{user.full_name}</h1> */}
               <p className="text-slate-600 flex items-center gap-2 mb-2">
                 <MapPin size={18} />
                 {user.state_name}
               </p>
-              <p className="text-slate-600">Member since {user.created_at}</p>
+              {/* <p className="text-slate-600">Member since {user.created_at}</p> */}
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={handleEdit}
+                className="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition font-medium"
+              >
+                <Edit size={18} /> Edit
+              </button>
+              <button
+                onClick={handleDeleteProfile}
+                className="flex items-center gap-2 px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg transition font-medium"
+              >
+                <Trash2 size={18} /> Delete
+              </button>
             </div>
           </div>
 
@@ -166,7 +217,7 @@ export default function Profile() {
                               Edit
                             </button>
                             <button
-                              onClick={() => handleDelete(ritual.id)}
+                              onClick={() => handleDeleteRitual(ritual.id)}
                               className="flex items-center gap-2 bg-red-50 text-red-600 px-3 py-1 rounded-lg hover:bg-red-100 transition text-sm"
                             >
                               <Trash2 size={16} />
