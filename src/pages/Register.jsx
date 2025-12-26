@@ -18,8 +18,6 @@ export default function Register() {
   const [states, setStates] = useState([]);
   const { register } = useAuth();
   const navigate = useNavigate();
-  const cloudinary = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-  // console.log(cloudinary); // This should now show "dyylsm0ma"
 
   const handleChange = (e) => {
     const { name, value } = e.target;

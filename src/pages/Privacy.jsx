@@ -82,7 +82,7 @@ export default function PrivacyPolicy() {
           <p className="text-slate-700">
             For questions or concerns, contact us at:
             <br />
-            <span className="font-medium">support@parampara.com</span>
+            <span className="font-medium">support@ourparampara.in</span>
           </p>
         </section>
 

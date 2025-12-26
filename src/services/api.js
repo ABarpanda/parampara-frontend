@@ -33,7 +33,7 @@ export const ritualsAPI = {
 
 export const usersAPI = {
   getProfile: (id) => api.get(`/api/users/${id}`),
-  updateProfile: (id, data) => api.put(`/api/users/${id}`, data),
+  // updateProfile: (id, data) => api.put(`/api/users/${id}`, data),
   getMyProfile: () => api.get('/api/users/me/profile'),
   updateMyProfile: (data) => api.put('/api/users/me/profile', data),
   deleteProfile: () => api.delete('/api/users/me/delete'),
