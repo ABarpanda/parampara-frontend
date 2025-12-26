@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { ritualsAPI, usersAPI, connectionsAPI } from '../services/api';
-import { MapPin, Calendar, Users, Heart, MessageCircle, Share2, Edit, Trash2 } from 'lucide-react';
+import { MapPin, Calendar, User, Heart, MessageCircle, Share2, Edit, Trash2 } from 'lucide-react';
 
 export default function RitualDetail() {
   const { id } = useParams();
@@ -55,6 +55,27 @@ export default function RitualDetail() {
   //     console.error('Failed to follow user:', err);
   //   }
   // };
+
+  const handleShare = async (ritual) => {
+    const shareData = {
+      title: ritual.title,
+      text: `Check out this ritual: ${ritual.title} on Parampara`,
+      url: `${window.location.origin}/ritual/${ritual.id}`,
+    };
+
+    try {
+      // Check if the browser supports native sharing
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        // Fallback: Copy to clipboard
+        await navigator.clipboard.writeText(shareData.url);
+        alert('Link copied to clipboard!');
+      }
+    } catch (err) {
+      console.error('Error sharing:', err);
+    }
+  };
 
   if (loading) {
     return (
@@ -118,7 +139,7 @@ export default function RitualDetail() {
             <div className="flex items-center justify-between bg-gradient-to-r from-saffron/10 to-green/10 p-4 rounded-lg mb-6">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-saffron rounded-full flex items-center justify-center text-white font-bold">
-                  {creator.full_name}
+                  {creator.profile_pic || <User/>}
                 </div>
                 <div>
                   <h3 className="font-semibold text-slate-800">{creator.full_name}</h3>
@@ -197,7 +218,10 @@ export default function RitualDetail() {
               <MessageCircle size={20} />
               <span>Comment</span>
             </button>
-            <button className="flex items-center gap-2 px-4 py-2 text-slate-600 hover:text-saffron transition">
+            <button 
+              onClick={() => handleShare(ritual)}
+              className="flex items-center gap-2 px-4 py-2 text-slate-600 hover:text-saffron transition"
+            >
               <Share2 size={20} />
               <span>Share</span>
             </button>
