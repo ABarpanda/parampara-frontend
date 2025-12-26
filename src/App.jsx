@@ -17,6 +17,7 @@ import AboutUs from './pages/AboutUs';
 import FAQ from './pages/FAQ';
 import Guidelines from './pages/Guidelines';
 import PrivacyPolicy from './pages/Privacy';
+import EditProfile from './pages/EditProfile';
 
 import './index.css';
 
@@ -59,6 +60,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Profile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile/edit"
+                element={
+                  <ProtectedRoute>
+                    <EditProfile />
                   </ProtectedRoute>
                 }
               />

@@ -4,6 +4,15 @@ import { ritualsAPI, categoriesAPI, statesAPI } from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function EditRitual() {
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    category: "",
+    state: "",
+    significance: "",
+    frequency: "",
+    tags: []
+  });
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -18,6 +27,11 @@ export default function EditRitual() {
       loadCategories();
       loadStates();
     }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
     
   const loadCategories = async () => {
       try {
@@ -36,16 +50,6 @@ export default function EditRitual() {
       console.error('Failed to load states:', err);
     }
   };
-  
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    category: "",
-    state: "",
-    significance: "",
-    frequency: "",
-    tags: []
-  });
 
   useEffect(() => {
     if (user === null) {
@@ -81,11 +85,6 @@ export default function EditRitual() {
 
     if (user) fetchRitual();
   }, [id, user, navigate]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
 
   const handleTagsChange = (e) => {
     const tags = e.target.value.split(",").map(t => t.trim());

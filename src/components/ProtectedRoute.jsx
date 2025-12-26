@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
-  const navigate = useNavigate();
+  const location = useLocation();
 
   if (loading) {
     return (
@@ -15,8 +14,7 @@ export default function ProtectedRoute({ children }) {
   }
 
   if (!user) {
-    navigate('/login');
-    return null;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   return children;
