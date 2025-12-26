@@ -59,3 +59,114 @@ export default function AboutUs() {
     </div>
   );
 }
+
+// import { useState } from "react";
+// import { ChevronDown } from "lucide-react";
+
+// function Section({ title, children, defaultOpen = false }) {
+//   const [open, setOpen] = useState(defaultOpen);
+
+//   return (
+//     <div className="border border-slate-200 rounded-lg overflow-hidden transition">
+//       <button
+//         onClick={() => setOpen(!open)}
+//         className="w-full flex justify-between items-center px-6 py-4 bg-slate-100 hover:bg-slate-200 transition"
+//       >
+//         <h2 className="text-lg font-semibold text-slate-800">{title}</h2>
+//         <ChevronDown
+//           className={`transition-transform duration-300 ${
+//             open ? "rotate-180" : ""
+//           }`}
+//         />
+//       </button>
+
+//       <div
+//         className={`transition-all duration-500 ease-in-out overflow-hidden ${
+//           open ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
+//         }`}
+//       >
+//         <div className="p-6 text-slate-700 leading-relaxed space-y-4">
+//           {children}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default function AboutUs() {
+//   return (
+//     <div className="min-h-screen bg-slate-50 py-16 px-4">
+//       <div className="max-w-4xl mx-auto space-y-6">
+
+//         <h1 className="text-4xl font-bold text-center text-slate-800 mb-8">
+//           About Parampara
+//         </h1>
+
+//         <Section title="Our Origins" defaultOpen>
+//           <p>
+//             For thousands of years, rituals and traditions have been passed down
+//             through generations. These were preserved not through books or
+//             databases, but through memory, storytelling, and lived experience.
+//           </p>
+
+//           <p>
+//             Our ancestors safeguarded culture through everyday life, ensuring
+//             knowledge lived within families rather than institutions.
+//           </p>
+//         </Section>
+
+//         <Section title="The Changing World">
+//           <p>
+//             As we enter a digital age, the way information flows has changed.
+//             Culture is no longer passed down naturally — it is often lost in
+//             translation.
+//           </p>
+
+//           <p>
+//             Modernization and globalization have connected us, but they’ve also
+//             diluted the uniqueness of family traditions that once defined
+//             identity.
+//           </p>
+//         </Section>
+
+//         <Section title="India’s Cultural Depth">
+//           <p>
+//             India is a land where culture shifts every few kilometers. Language,
+//             customs, rituals — all transform subtly yet meaningfully.
+//           </p>
+
+//           <p>
+//             Even when two traditions appear similar, small differences make each
+//             family’s heritage unique and deeply personal.
+//           </p>
+//         </Section>
+
+//         <Section title="Our Mission">
+//           <p>
+//             Parampara exists to preserve, document, and celebrate these traditions.
+//             We aim to create a living archive where stories are not forgotten but
+//             shared.
+//           </p>
+
+//           <p>
+//             Our mission is to ensure that future generations inherit not just
+//             memories, but meaning — a connection to where they come from.
+//           </p>
+//         </Section>
+
+//         <Section title="Why Parampara Matters">
+//           <p>
+//             In an age of nuclear families and digital lives, traditions risk
+//             disappearing silently.
+//           </p>
+
+//           <p>
+//             Parampara is a bridge between generations — a place to safeguard
+//             wisdom, honor ancestry, and keep culture alive.
+//           </p>
+//         </Section>
+
+//       </div>
+//     </div>
+//   );
+// }

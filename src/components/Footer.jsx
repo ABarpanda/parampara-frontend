@@ -45,8 +45,8 @@ export default function Footer() {
             <h3 className="font-semibold text-slate-800 mb-4">Connect</h3>
             <div className="flex gap-4 mb-4">
               <a href="#" className="p-2 bg-slate-50 rounded-full text-slate-500 hover:text-saffron transition"><Twitter size={18} /></a>
-              <a href="#" className="p-2 bg-slate-50 rounded-full text-slate-500 hover:text-saffron transition"><Github size={18} /></a>
-              <a href="#" className="p-2 bg-slate-50 rounded-full text-slate-500 hover:text-saffron transition"><Mail size={18} /></a> {/*mailto:support@ourparampara.in*/}
+              <a href="https://github.com/ABarpanda/parampara-frontend" className="p-2 bg-slate-50 rounded-full text-slate-500 hover:text-saffron transition"><Github size={18} /></a>
+              <a href="mailto:support@parampara.com" className="p-2 bg-slate-50 rounded-full text-slate-500 hover:text-saffron transition"><Mail size={18} /></a> {/*mailto:support@ourparampara.in*/}
             </div>
           </div>
         </div>

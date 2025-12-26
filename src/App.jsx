@@ -14,6 +14,9 @@ import Explore from './pages/Explore';
 import Profile from './pages/Profile';
 import EditRitual from './pages/EditRitual';
 import AboutUs from './pages/AboutUs';
+import FAQ from './pages/FAQ';
+import Guidelines from './pages/Guidelines';
+import PrivacyPolicy from './pages/Privacy';
 
 import './index.css';
 
@@ -30,6 +33,10 @@ function App() {
               <Route path="/about" element={<AboutUs />} />
               <Route path="/register" element={<Register />} />
               <Route path="/explore" element={<Explore />} />
+              <Route path="/guidelines" element={<Guidelines />} />
+              <Route path="/privacy" element={<PrivacyPolicy />} />
+              <Route path="/contact" element={<Guidelines />} />
+              <Route path="/faq" element={<FAQ />} />
               <Route path="/ritual/:id" element={<RitualDetail />} />
               <Route
                 path="/ritual/:id/edit"
