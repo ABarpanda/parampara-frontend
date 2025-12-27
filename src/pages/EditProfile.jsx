@@ -13,6 +13,7 @@ export default function EditProfile() {
     region: '',
     profile_pic: null
   });
+  const [existingPic, setExistingPic] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [states, setStates] = useState([]);
@@ -21,6 +22,27 @@ export default function EditProfile() {
 
   useEffect(() => {
     loadStates();
+    // load current user profile to prefill form
+    const loadProfile = async () => {
+      try {
+        const res = await usersAPI.getMyProfile();
+        const data = res.data || {};
+        setFormData(prev => ({
+          ...prev,
+          full_name: data.full_name || '',
+          email: data.email || '',
+          state_name: data.state_name || '',
+          region: data.region || '',
+          password: '',
+          confirmPassword: ''
+        }));
+        setExistingPic(data.profile_pic || null);
+      } catch (err) {
+        console.error('Failed to load profile:', err);
+      }
+    };
+
+    loadProfile();
   }, []);
 
   const handleChange = (e) => {
@@ -40,20 +62,29 @@ export default function EditProfile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     try {
-      const imageUrl = await uploadProfilePic(formData.profile_pic);
+      let imageUrl = null;
+      // if user chose a new file, upload it; otherwise keep existingPic
+      if (formData.profile_pic instanceof File) {
+        imageUrl = await uploadProfilePic(formData.profile_pic);
+      } else {
+        imageUrl = existingPic;
+      }
+
       const newFormData = { 
         ...formData, 
         profile_pic: imageUrl
       };
+
       await usersAPI.updateMyProfile(newFormData);
-      navigate(`/me/profile`);
+      alert("Profile updated successfully!\nPlease login again.");
+      logout();
     } catch (err) {
       setError(err.response?.data?.message || "Update failed");
     } finally {
-      alert("Profile updated successfully!\nPlease login again.");
-      logout();
+      setLoading(false);
     }
   };
 
@@ -128,6 +159,8 @@ export default function EditProfile() {
                 onChange={(e) => {
                   const file = e.target.files[0] || null; // Handle cancellation
                   setFormData(prev => ({ ...prev, profile_pic: file }));
+                  // clear existing preview if user selects a new file
+                  if (file) setExistingPic(null);
                 }}
                 className="w-full text-sm text-slate-500
                   file:mr-4 file:py-2 file:px-4
@@ -137,6 +170,12 @@ export default function EditProfile() {
                   hover:file:bg-saffron/20
                   cursor-pointer"
               />
+            {existingPic && (
+              <div className="mt-3">
+                <p className="text-sm text-slate-600 mb-1">Current picture:</p>
+                <img src={existingPic} alt="Profile" className="w-24 h-24 rounded-full object-cover" />
+              </div>
+            )}
             </div>
 
             {/* State */}
