@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { ritualsAPI } from '../services/api';
-import { Search, Filter, MapPin, Edit, Trash2 } from 'lucide-react';
+import { Search, Filter, MapPin, Edit, Trash2, Heart, MessageCircle } from 'lucide-react';
 
 export default function Explore() {
   const { user } = useAuth();
@@ -12,17 +12,6 @@ export default function Explore() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRegion, setSelectedRegion] = useState('');
   const [page, setPage] = useState(1);
-  const [states, setStates] = useState([]);
-
-  const REGIONS = [
-    'North India',
-    'South India',
-    'East India',
-    'West India',
-    'Northeast India',
-    'Central India',
-    'Diaspora'
-  ];
 
   useEffect(() => {
     loadRituals();
@@ -137,90 +126,115 @@ export default function Explore() {
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-saffron"></div>
           </div>
         ) : rituals.length > 0 ? (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              {rituals.map(ritual => (
-                <div
-                  key={ritual.id}
-                  className="bg-white rounded-lg shadow-md hover:shadow-xl transition overflow-hidden group"
-                >
-                  <div className="p-6">
-                    <div className="flex justify-between items-start mb-2">
-                      <Link to={`/ritual/${ritual.id}`} className="flex-1">
-                        <h3 className="text-xl font-bold text-slate-800 group-hover:text-saffron transition">
-                          {ritual.title}
-                        </h3>
-                        <p className="text-slate-600 text-sm mb-4 line-clamp-2">{ritual.description}</p>
-                      </Link>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {rituals.map(ritual => (
+              <div
+                key={ritual.id}
+                className="group relative bg-white rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col h-full"
+              >
+                <Link 
+                  to={`/ritual/${ritual.id}`} 
+                  className="absolute inset-0 z-0" 
+                  aria-label={`View ${ritual.title}`}
+                />
 
-                      {user?.id === ritual.user_id && (
-                        <div className="flex gap-2 ml-4">
-                          <button
-                            onClick={() => navigate(`/ritual/${ritual.id}/edit`)}
-                            className="flex items-center gap-2 bg-blue-50 text-blue-600 px-3 py-1 rounded-lg hover:bg-blue-100 transition text-sm"
-                          >
-                            <Edit size={16} />
-                            Edit
-                          </button>
-                          <button
-                            onClick={() => handleDelete(ritual.id)}
-                            className="flex items-center gap-2 bg-red-50 text-red-600 px-3 py-1 rounded-lg hover:bg-red-100 transition text-sm"
-                          >
-                            <Trash2 size={16} />
-                            Delete
-                          </button>
-                        </div>
-                      )}
-                    </div>
+                <div className="p-5 flex flex-col h-full relative z-10 pointer-events-none">
+                  <div className="flex justify-between items-start gap-4 mb-3">
+                    <h3 className="text-lg font-bold text-slate-900 leading-tight group-hover:text-saffron transition-colors">
+                      {ritual.title}
+                    </h3>
+                    
+                    {user?.id === ritual.user_id && (
+                      <div className="flex gap-1.5 pointer-events-auto shrink-0">
+                        <button
+                          onClick={(e) => { e.preventDefault(); e.stopPropagation(); navigate(`/ritual/${ritual.id}/edit`); }}
+                          className="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition flex items-center gap-1 text-xs font-medium"
+                          title="Edit Ritual"
+                        >
+                          <Edit size={14} />
+                          <span>Edit</span>
+                        </button>
+                        <button
+                          onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleDelete(ritual.id); }}
+                          className="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition flex items-center gap-1 text-xs font-medium"
+                          title="Delete Ritual"
+                        >
+                          <Trash2 size={14} />
+                          <span>Delete</span>
+                        </button>
+                      </div>
+                    )}
+                  </div>
 
-                    <div className="flex items-center gap-2 mb-3 text-slate-500 text-sm">
-                      <MapPin size={16} />
-                      {ritual.state}
-                    </div>
+                  {/* Description */}
+                  <p className="text-slate-600 text-sm mb-4 line-clamp-2 flex-grow">
+                    {ritual.description}
+                  </p>
 
-                    <div className="mb-4">
-                      <span className="inline-block bg-slate-100 text-slate-700 text-xs px-3 py-1 rounded-full font-medium">
-                        {ritual.frequency}
-                      </span>
+                  <div className="mt-auto space-y-3">
+                    <div className="flex items-center gap-1.5 text-slate-400 text-xs">
+                      <MapPin size={14} className="shrink-0" />
+                      <span className="truncate">{ritual.state}</span>
                     </div>
 
                     <div className="flex flex-wrap gap-2">
-                      {ritual.tags?.slice(0, 2).map((tag, idx) => (
+                      {ritual.tags?.slice(0, 3).map((tag, idx) => (
                         <span
                           key={idx}
-                          className="bg-saffron/10 text-saffron text-xs px-3 py-1 rounded-full"
+                          className="bg-orange-50 text-orange-600 text-[10px] tracking-wider px-2 py-1 rounded-md border border-orange-100"
                         >
-                          #{tag}
+                          {tag}
                         </span>
                       ))}
                     </div>
+
+                    <div className="pt-3 border-t border-slate-50 flex items-center gap-4 text-slate-400">
+                      <div className="flex items-center gap-1 text-xs">
+                        <Heart size={14} className={ritual.likes > 0 ? "text-red-400 fill-red-400" : ""} />
+                        <span>{ritual.likes || 0}</span>
+                      </div>
+                      <div className="flex items-center gap-1 text-xs">
+                        <MessageCircle size={14} />
+                        <span>{ritual.comments || 0}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              ))}
-            </div>
-
-            {/* Pagination */}
-            <div className="flex justify-center gap-4">
-              <button
-                onClick={() => setPage(p => Math.max(1, p - 1))}
-                disabled={page === 1}
-                className="px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-100 transition disabled:opacity-50"
-              >
-                Previous
-              </button>
-              <span className="px-4 py-2 text-slate-700 font-medium">Page {page}</span>
-              <button
-                onClick={() => setPage(p => p + 1)}
-                className="px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-100 transition"
-              >
-                Next
-              </button>
-            </div>
-          </>
+              </div>
+            ))}
+          </div>
         ) : (
-          <div className="text-center py-12 bg-white rounded-lg shadow-md">
-            <h3 className="text-2xl font-bold text-slate-800 mb-2">No rituals found</h3>
-            <p className="text-slate-600">Try a different search or filter</p>
+          <div className="text-center py-12">
+            <h3 className="text-2xl font-bold text-slate-800 mb-4">No rituals yet</h3>
+            <p className="text-slate-600 mb-6">Be the first to share your family rituals!</p>
+            {user && (
+              <Link
+                to="/create"
+                className="bg-saffron text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-500 transition inline-block"
+              >
+                Create a Ritual
+              </Link>
+            )}
+          </div>
+        )}
+
+        {/* Pagination */}
+        {rituals.length > 0 && (
+          <div className="flex justify-center gap-4 mt-12">
+            <button
+              onClick={() => setPage(p => Math.max(1, p - 1))}
+              disabled={page === 1}
+              className="px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-100 transition disabled:opacity-50"
+            >
+              Previous
+            </button>
+            <span className="px-4 py-2">Page {page}</span>
+            <button
+              onClick={() => setPage(p => p + 1)}
+              className="px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-100 transition"
+            >
+              Next
+            </button>
           </div>
         )}
       </div>

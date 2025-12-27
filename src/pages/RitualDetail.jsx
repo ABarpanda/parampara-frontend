@@ -114,7 +114,7 @@ export default function RitualDetail() {
                 <span>{ritual.state}</span>
               </div>
             </div>
-            {user?.id === ritual.userId && (
+            {user?.id === ritual.user_id && (
               <div className="flex gap-2">
                 <button
                   onClick={() => navigate(`/ritual/${id}/edit`)}
