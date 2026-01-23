@@ -26,7 +26,6 @@ build/
 
 # OS
 Thumbs.db
-.env.example
 
 # Logs
 logs/
