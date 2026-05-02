@@ -19,9 +19,9 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="flex items-center gap-2">
             <div className="text-2xl font-bold bg-gradient-to-r from-saffron via-green to-navy bg-clip-text text-transparent">
-              परंपरा
+              <img src="/logo.png" className="h-10 w-10 object-contain" />
             </div>
-            <span className="hidden sm:inline text-sm font-semibold text-slate-600">Parampara</span>
+            <span className="hidden sm:inline text-me font-semibold text-slate-600">Parampara</span>
           </Link>
 
           {/* Desktop Menu */}
