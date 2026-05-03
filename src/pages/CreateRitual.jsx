@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { ritualsAPI, categoriesAPI, statesAPI } from '../services/api';
+import './CreateRitual.css';
 
 export default function CreateRitual() {
   const { user } = useAuth();
@@ -69,25 +70,23 @@ export default function CreateRitual() {
     }
   };
 
-  const [selectedState, setSelectedState] = useState("");
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-8">
-      <div className="max-w-2xl mx-auto px-4">
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <h1 className="text-4xl font-bold mb-8 bg-gradient-to-r from-saffron via-green to-navy bg-clip-text text-transparent">
+    <div className="ritual-form-page bg-gradient-body">
+      <div className="ritual-form-card">
+        <div className="form-inner-card">
+          <h1 className="form-title">
             Share Your Family Ritual
           </h1>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+            <div className="error-alert">
               {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+          <form onSubmit={handleSubmit} className="ritual-form">
+            <div className="form-group">
+              <label className="form-label">
                 Ritual Title *
               </label>
               <input
@@ -97,12 +96,12 @@ export default function CreateRitual() {
                 onChange={handleChange}
                 required
                 placeholder="e.g., Diwali Preparation Ritual"
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent outline-none transition"
+                className="form-input"
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+            <div className="form-group">
+              <label className="form-label">
                 Category *
               </label>
               <select
@@ -110,7 +109,7 @@ export default function CreateRitual() {
                 value={formData.category}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent outline-none transition"
+                className="form-select"
               >
                 <option value="">Select a category</option>
                 {categories.map(cat => (
@@ -119,8 +118,8 @@ export default function CreateRitual() {
               </select>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+            <div className="form-group">
+              <label className="form-label">
                 State *
               </label>
               <select
@@ -128,7 +127,7 @@ export default function CreateRitual() {
                 value={formData.state || ""}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent outline-none transition"
+                className="form-select"
               >
                 <option value="" disabled>Select a State</option>
                 {states.map((state) => (
@@ -139,8 +138,8 @@ export default function CreateRitual() {
               </select>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+            <div className="form-group">
+              <label className="form-label">
                 Description *
               </label>
               <textarea
@@ -150,12 +149,12 @@ export default function CreateRitual() {
                 required
                 rows="6"
                 placeholder="Describe your ritual in detail. Include what it is, when it's performed, who participates, and what it means to your family..."
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent outline-none transition"
+                className="form-textarea"
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+            <div className="form-group">
+              <label className="form-label">
                 Significance
               </label>
               <textarea
@@ -164,20 +163,20 @@ export default function CreateRitual() {
                 onChange={handleChange}
                 rows="3"
                 placeholder="Why is this ritual important to your family? What values does it represent?"
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent outline-none transition"
+                className="form-textarea"
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+            <div className="form-grid">
+              <div className="form-group">
+                <label className="form-label">
                   Frequency
                 </label>
                 <select
                   name="frequency"
                   value={formData.frequency}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent outline-none transition"
+                  className="form-select"
                 >
                   <option value="Daily">Daily</option>
                   <option value="Weekly">Weekly</option>
@@ -187,8 +186,8 @@ export default function CreateRitual() {
                 </select>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+              <div className="form-group">
+                <label className="form-label">
                   Tags (comma-separated)
                 </label>
                 <input
@@ -197,7 +196,7 @@ export default function CreateRitual() {
                   value={formData.tags}
                   onChange={handleChange}
                   placeholder="e.g., family, festival, cooking, celebration"
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent outline-none transition"
+                  className="form-input"
                 />
               </div>
             </div>
@@ -205,7 +204,7 @@ export default function CreateRitual() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-saffron to-orange-500 text-white font-semibold py-3 rounded-lg hover:shadow-lg transition disabled:opacity-50"
+              className="btn-submit"
             >
               {loading ? 'Publishing...' : 'Publish Ritual'}
             </button>

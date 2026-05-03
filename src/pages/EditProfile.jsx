@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { usersAPI, statesAPI } from '../services/api';
+import './EditProfile.css';
 
 export default function EditProfile() {
   const [formData, setFormData] = useState({
@@ -117,118 +118,83 @@ export default function EditProfile() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-saffron/10 via-green/10 to-navy/10 py-8">
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-lg shadow-xl p-8">
-          <h1 className="text-3xl text-center mb-8">
-            Update your profile
-          </h1>
+    <div className="edit-profile-page">
+      <div className="edit-profile-card">
+        <h1 className="edit-profile-title">
+          Update your profile
+        </h1>
 
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
-              {error}
+        {error && (
+          <div className="error-message">
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="edit-profile-form">
+          {/* Full Name */}
+          <div className="form-group">
+            <label>Full Name</label>
+            <input
+              type="text"
+              name="full_name"
+              value={formData.full_name}
+              onChange={handleChange}
+              required
+              className="form-control"
+              placeholder="Your Name"
+            />
+          </div>
+
+          {/* Profile Picture Upload */}
+          <div className="form-group">
+            <label>Profile Picture</label>
+            <input
+              type="file"
+              name="profile_pic"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files[0] || null; // Handle cancellation
+                setFormData(prev => ({ ...prev, profile_pic: file }));
+                // clear existing preview if user selects a new file
+                if (file) setExistingPic(null);
+              }}
+              className="file-input"
+            />
+          {existingPic && (
+            <div className="current-pic-container">
+              <p className="current-pic-label">Current picture:</p>
+              <img src={existingPic} alt="Profile" className="current-pic-img" />
             </div>
           )}
+          </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Full Name */}
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
-                Full Name
-              </label>
-              <input
-                type="text"
-                name="full_name"
-                value={formData.full_name}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent outline-none transition"
-                placeholder="Your Name"
-              />
-            </div>
-
-            {/* Profile Picture Upload */}
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
-                Profile Picture
-              </label>
-              <input
-                type="file"
-                name="profile_pic"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files[0] || null; // Handle cancellation
-                  setFormData(prev => ({ ...prev, profile_pic: file }));
-                  // clear existing preview if user selects a new file
-                  if (file) setExistingPic(null);
-                }}
-                className="w-full text-sm text-slate-500
-                  file:mr-4 file:py-2 file:px-4
-                  file:rounded-full file:border-0
-                  file:text-sm file:font-semibold
-                  file:bg-saffron/10 file:text-saffron
-                  hover:file:bg-saffron/20
-                  cursor-pointer"
-              />
-            {existingPic && (
-              <div className="mt-3">
-                <p className="text-sm text-slate-600 mb-1">Current picture:</p>
-                <img src={existingPic} alt="Profile" className="w-24 h-24 rounded-full object-cover" />
-              </div>
-            )}
-            </div>
-
-            {/* State */}
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
-                State
-              </label>
-              <select
-                name="state_name"
-                value={formData.state_name}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent outline-none transition"
-              >
-                <option value="">Select your state</option>
-                {states.map((state) => (
-                  <option key={state.id} value={state.state_name}>
-                    {state.state_name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Region Field with Auto-suggest */}
-            {/* <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
-                Region
-              </label>
-              <input
-                type="text"
-                name="region"
-                list="region-list" // Connects to the datalist below
-                value={formData.region}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent outline-none transition"
-                placeholder="Type or select a region"
-              />
-              <datalist id="region-list">
-                {REGION.map((reg) => (
-                  <option key={reg} value={reg} />
-                ))}
-              </datalist>
-            </div> */}
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-gradient-to-r from-saffron to-orange-500 text-white font-semibold py-2 rounded-lg hover:shadow-lg transition disabled:opacity-50"
+          {/* State */}
+          <div className="form-group">
+            <label>State</label>
+            <select
+              name="state_name"
+              value={formData.state_name}
+              onChange={handleChange}
+              required
+              className="form-control"
             >
-              {loading ? 'Updating Profile...' : 'Update Profile'}
-            </button>
-          </form>
-        </div>
+              <option value="">Select your state</option>
+              {states.map((state) => (
+                <option key={state.id} value={state.state_name}>
+                  {state.state_name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="submit-btn"
+          >
+            {loading ? 'Updating Profile...' : 'Update Profile'}
+          </button>
+        </form>
       </div>
     </div>
   );

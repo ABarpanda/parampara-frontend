@@ -1,75 +1,68 @@
 import React from 'react';
 import { Heart, Mail, Info, Globe, Github, Twitter } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import './Footer.css';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-white border-t border-slate-100 pt-12 pb-8">
-      <div className="max-container px-4 mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+    <footer className="footer">
+      <div className="max-container">
+        <div className="footer-grid">
           
           {/* Brand Section */}
-          <div className="col-span-1 md:col-span-1">
-            <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-              <span className="text-saffron">●</span> Parampara
+          <div className="footer-brand-section">
+            <h2 className="footer-brand-title">
+              <span className="footer-brand-dot">●</span> Parampara
             </h2>
-            <p className="text-slate-500 text-sm leading-relaxed">
+            <p className="footer-brand-description">
               Preserving and sharing cultural traditions from every corner of India and the diaspora.
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-semibold text-slate-800 mb-4">Community</h3>
-            <ul className="space-y-2 text-sm text-slate-600">
-              <li><Link to="/about" className="hover:text-saffron transition">About Us</Link></li>
-              <li><Link to="/explore" className="hover:text-saffron transition">Browse Rituals</Link></li>
-              <li><Link to="/guidelines" className="hover:text-saffron transition">Community Guidelines</Link></li>
+            <h3 className="footer-heading">Community</h3>
+            <ul className="footer-list">
+              <li className="footer-list-item"><Link to="/about" className="footer-link">About Us</Link></li>
+              <li className="footer-list-item"><Link to="/explore" className="footer-link">Browse Rituals</Link></li>
+              <li className="footer-list-item"><Link to="/guidelines" className="footer-link">Community Guidelines</Link></li>
             </ul>
           </div>
 
           {/* Support */}
           <div>
-            <h3 className="font-semibold text-slate-800 mb-4">Support</h3>
-            <ul className="space-y-2 text-sm text-slate-600">
-              <li><Link to="/contact" className="hover:text-saffron transition">Contact Us</Link></li>
-              <li><Link to="/faq" className="hover:text-saffron transition">FAQs</Link></li>
-              <li><Link to="/privacy" className="hover:text-saffron transition">Privacy Policy</Link></li>
+            <h3 className="footer-heading">Support</h3>
+            <ul className="footer-list">
+              <li className="footer-list-item"><Link to="/contact" className="footer-link">Contact Us</Link></li>
+              <li className="footer-list-item"><Link to="/faq" className="footer-link">FAQs</Link></li>
+              <li className="footer-list-item"><Link to="/privacy" className="footer-link">Privacy Policy</Link></li>
             </ul>
           </div>
 
           {/* Social & Contact */}
           <div>
-            <h3 className="font-semibold text-slate-800 mb-4">Connect</h3>
-            <div className="flex gap-4 mb-4">
-              <a href="#" className="p-2 bg-slate-50 rounded-full text-slate-500 hover:text-saffron transition"><Twitter size={18} /></a>
-              <a href="https://github.com/ABarpanda/parampara-frontend" className="p-2 bg-slate-50 rounded-full text-slate-500 hover:text-saffron transition"><Github size={18} /></a>
-              <a href="mailto:support@parampara.com" className="p-2 bg-slate-50 rounded-full text-slate-500 hover:text-saffron transition"><Mail size={18} /></a> {/*mailto:support@ourparampara.in*/}
+            <h3 className="footer-heading">Connect</h3>
+            <div className="footer-social-links">
+              <a href="#" className="footer-social-icon"><Twitter size={18} /></a>
+              <a href="https://github.com/ABarpanda/parampara-frontend" className="footer-social-icon"><Github size={18} /></a>
+              <a href="mailto:support@parampara.com" className="footer-social-icon"><Mail size={18} /></a>
             </div>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-slate-50 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-slate-400 text-xs">
+        <div className="footer-bottom">
+          <p className="footer-copyright">
             © {currentYear} Parampara Community. All rights reserved.
           </p>
           
-          <div className="flex items-center gap-1.5 text-sm text-slate-600">
+          <div className="footer-made-with">
             <span>Made with</span>
-            <Heart size={16} className="text-red-500 fill-red-500 animate-pulse" />
+            <Heart size={16} className="heart-icon" />
             <span>by</span>
-            {/* <a 
-              href="https://yourportfolio.com" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="font-medium text-slate-800 hover:text-saffron transition"
-            >
-              ABarpanda
-            </a> */}
-            <p className="font-medium text-slate-800">ABarpanda</p>
+            <p className="footer-author">ABarpanda</p>
           </div>
         </div>
       </div>
