@@ -62,13 +62,13 @@
 }
 
 .search-input:focus {
-  ring: 2px solid var(--color-saffron);
+  ring: 2px solid var(--color-primary);
   border-color: transparent;
-  box-shadow: 0 0 0 2px var(--color-saffron);
+  box-shadow: 0 0 0 2px var(--color-primary);
 }
 
 .search-button {
-  background-color: var(--color-saffron);
+  background-color: var(--color-primary);
   color: var(--color-white);
   padding: var(--spacing-2) var(--spacing-6);
   border-radius: var(--border-radius-lg);
@@ -77,7 +77,7 @@
 }
 
 .search-button:hover {
-  background-color: var(--color-saffron-hover);
+  background-color: var(--color-primary-hover);
 }
 
 .loading-container {
@@ -91,7 +91,7 @@
   height: var(--spacing-12);
   width: var(--spacing-12);
   border-radius: var(--border-radius-full);
-  border-bottom: 2px solid var(--color-saffron);
+  border-bottom: 2px solid var(--color-primary);
 }
 
 .rituals-grid {
@@ -162,7 +162,7 @@
 }
 
 .ritual-card:hover .ritual-title {
-  color: var(--color-saffron);
+  color: var(--color-primary);
 }
 
 .card-actions {
@@ -289,7 +289,7 @@
 }
 
 .create-btn {
-  background-color: var(--color-saffron);
+  background-color: var(--color-primary);
   color: var(--color-white);
   padding: 0.75rem 1.5rem;
   border-radius: var(--border-radius-lg);
@@ -299,7 +299,7 @@
 }
 
 .create-btn:hover {
-  background-color: var(--color-saffron-hover);
+  background-color: var(--color-primary-hover);
 }
 
 .pagination {

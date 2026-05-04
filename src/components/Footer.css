@@ -39,7 +39,7 @@
 }
 
 .footer-brand-dot {
-  color: var(--color-saffron);
+  color: var(--color-primary);
 }
 
 .footer-brand-description {
@@ -71,7 +71,7 @@
 }
 
 .footer-link:hover {
-  color: var(--color-saffron);
+  color: var(--color-primary);
 }
 
 .footer-social-links {
@@ -92,7 +92,7 @@
 }
 
 .footer-social-icon:hover {
-  color: var(--color-saffron);
+  color: var(--color-primary);
 }
 
 .footer-bottom {

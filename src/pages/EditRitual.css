@@ -51,7 +51,7 @@
 .form-select:focus,
 .form-textarea:focus {
   border-color: transparent;
-  box-shadow: 0 0 0 2px var(--color-saffron);
+  box-shadow: 0 0 0 2px var(--color-primary);
 }
 
 .form-grid {
@@ -68,7 +68,7 @@
 
 .btn-submit {
   width: 100%;
-  background: linear-gradient(to right, var(--color-saffron), #f97316);
+  background: linear-gradient(to right, var(--color-primary), #f97316);
   color: var(--color-white);
   font-weight: 600;
   padding: var(--spacing-3) 0;

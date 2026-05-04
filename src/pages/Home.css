@@ -32,7 +32,7 @@
 
 .btn-primary-white {
   background-color: var(--color-white);
-  color: var(--color-navy);
+  color: var(--color-tertiary);
   padding: var(--spacing-3) var(--spacing-6);
   border-radius: var(--border-radius-lg);
   font-weight: 600;
@@ -146,7 +146,7 @@
 }
 
 .ritual-card:hover .ritual-title {
-  color: var(--color-saffron);
+  color: var(--color-primary);
 }
 
 .ritual-actions {
@@ -274,7 +274,7 @@
 }
 
 .btn-create {
-  background-color: var(--color-saffron);
+  background-color: var(--color-primary);
   color: var(--color-white);
   padding: var(--spacing-3) var(--spacing-6);
   border-radius: var(--border-radius-lg);
@@ -284,7 +284,7 @@
 }
 
 .btn-create:hover {
-  background-color: var(--color-saffron-hover);
+  background-color: var(--color-primary-hover);
 }
 
 /* Pagination */
@@ -327,5 +327,5 @@
   border-radius: var(--border-radius-full);
   height: 3rem;
   width: 3rem;
-  border-bottom: 2px solid var(--color-saffron);
+  border-bottom: 2px solid var(--color-primary);
 }

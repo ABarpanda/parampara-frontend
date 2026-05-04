@@ -21,7 +21,7 @@
   font-weight: 700;
   text-align: center;
   margin-bottom: var(--spacing-8);
-  background: linear-gradient(to right, var(--color-saffron), var(--color-green), var(--color-navy));
+  background: linear-gradient(to right, var(--color-primary), var(--color-secondary), var(--color-tertiary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -66,12 +66,12 @@
 
 .form-input:focus {
   border-color: transparent;
-  box-shadow: 0 0 0 2px var(--color-saffron);
+  box-shadow: 0 0 0 2px var(--color-primary);
 }
 
 .btn-auth {
   width: 100%;
-  background: linear-gradient(to right, var(--color-saffron), #f97316);
+  background: linear-gradient(to right, var(--color-primary), #f97316);
   color: var(--color-white);
   font-weight: 600;
   padding: var(--spacing-2) 0;
@@ -95,7 +95,7 @@
 }
 
 .auth-link {
-  color: var(--color-saffron);
+  color: var(--color-primary);
   font-weight: 600;
 }
 

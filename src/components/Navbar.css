@@ -28,7 +28,7 @@
 .logo-text-gradient {
   font-size: 1.5rem;
   font-weight: 700;
-  background: linear-gradient(to right, var(--color-saffron), var(--color-green), var(--color-navy));
+  background: linear-gradient(to right, var(--color-primary), var(--color-secondary), var(--color-tertiary));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -73,14 +73,14 @@
 }
 
 .nav-link:hover {
-  color: var(--color-saffron);
+  color: var(--color-primary);
 }
 
 .nav-button-primary {
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
-  background-color: var(--color-saffron);
+  background-color: var(--color-primary);
   color: var(--color-white);
   padding: var(--spacing-2) var(--spacing-4);
   border-radius: var(--border-radius-lg);
@@ -88,7 +88,7 @@
 }
 
 .nav-button-primary:hover {
-  background-color: var(--color-saffron-hover);
+  background-color: var(--color-primary-hover);
 }
 
 .logout-button {
@@ -116,7 +116,7 @@
 }
 
 .mobile-menu-toggle:hover {
-  color: var(--color-saffron);
+  color: var(--color-primary);
 }
 
 .mobile-menu {
@@ -138,7 +138,7 @@
 }
 
 .mobile-nav-link:hover {
-  color: var(--color-saffron);
+  color: var(--color-primary);
 }
 
 .mobile-logout-button {

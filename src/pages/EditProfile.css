@@ -60,7 +60,7 @@
 
 .form-control:focus {
   border-color: transparent;
-  box-shadow: 0 0 0 2px var(--color-saffron);
+  box-shadow: 0 0 0 2px var(--color-primary);
 }
 
 .file-input {
@@ -78,7 +78,7 @@
   font-size: 0.875rem;
   font-weight: 600;
   background-color: rgba(255, 153, 51, 0.1);
-  color: var(--color-saffron);
+  color: var(--color-primary);
   cursor: pointer;
   transition: var(--transition-default);
 }
@@ -106,7 +106,7 @@
 
 .submit-btn {
   width: 100%;
-  background: linear-gradient(to right, var(--color-saffron), #f97316);
+  background: linear-gradient(to right, var(--color-primary), #f97316);
   color: var(--color-white);
   font-weight: 600;
   padding: var(--spacing-2) 0;

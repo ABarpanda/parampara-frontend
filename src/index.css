@@ -1,9 +1,9 @@
 :root {
   /* Colors */
-  --color-saffron: #FF9933;
-  --color-saffron-hover: #e68a2e;
-  --color-green: #138808;
-  --color-navy: #003478;
+  --color-primary: #D4A017;
+  --color-primary-hover: #e68a2e;
+  --color-secondary: #8A9A5B;
+  --color-tertiary: #5C3A21;
   
   --color-slate-50: #f8fafc;
   --color-slate-100: #f1f5f9;
@@ -28,6 +28,7 @@
   --spacing-2: 0.5rem;
   --spacing-3: 0.75rem;
   --spacing-4: 1rem;
+  --spacing-5: 1.25rem;
   --spacing-6: 1.5rem;
   --spacing-8: 2rem;
   --spacing-10: 2.5rem;
@@ -129,13 +130,13 @@ button {
   height: 3rem;
   border-radius: var(--border-radius-full);
   border: 2px solid transparent;
-  border-bottom-color: var(--color-saffron);
+  border-bottom-color: var(--color-primary);
   animation: spin 1s linear infinite;
 }
 
 /* Gradients */
 .bg-gradient-primary {
-  background: linear-gradient(to right, var(--color-saffron), var(--color-green), var(--color-navy));
+  background: linear-gradient(to right, var(--color-primary), var(--color-secondary), var(--color-tertiary));
 }
 
 .bg-gradient-body {
