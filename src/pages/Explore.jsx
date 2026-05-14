@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { ritualsAPI } from '../services/api';
 import { Search, Filter, MapPin, Edit, Trash2, Heart, MessageCircle } from 'lucide-react';
+import './Explore.css';
 
 export default function Explore() {
   const { user } = useAuth();
@@ -58,97 +59,64 @@ export default function Explore() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-8">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-slate-800 mb-4">Explore Rituals</h1>
-          <p className="text-slate-600 text-lg">Discover family traditions and rituals from across India</p>
+    <div className="explore-page">
+      <div className="explore-container">
+        <div className="header-section">
+          <h1 className="page-title">Explore Rituals</h1>
+          <p className="page-subtitle">Discover family traditions and rituals from across India</p>
         </div>
 
         {/* Search and Filter */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <form onSubmit={handleSearch} className="flex gap-4 mb-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-3 text-slate-400" size={20} />
+        <div className="search-filter-section">
+          <form onSubmit={handleSearch} className="search-form">
+            <div className="search-input-container">
+              <Search className="search-icon" size={20} />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search rituals by title, tags, or keywords..."
-                className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent outline-none"
+                className="search-input"
               />
             </div>
             <button
               type="submit"
-              className="bg-saffron text-white px-6 py-2 rounded-lg hover:bg-orange-500 transition font-semibold"
+              className="search-button"
             >
               Search
             </button>
           </form>
-
-          {/* Region Filter */}
-          {/* <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => {
-                setSelectedRegion('');
-                setPage(1);
-              }}
-              className={`px-4 py-2 rounded-full transition ${
-                selectedRegion === ''
-                  ? 'bg-saffron text-white'
-                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-              }`}
-            >
-              All Regions
-            </button>
-            {REGIONS.map(region => (
-              <button
-                key={region}
-                onClick={() => {
-                  setSelectedRegion(region);
-                  setPage(1);
-                }}
-                className={`px-4 py-2 rounded-full transition ${
-                  selectedRegion === region
-                    ? 'bg-saffron text-white'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                }`}
-              >
-                {region}
-              </button>
-            ))}
-          </div> */}
         </div>
 
         {/* Rituals Grid */}
         {loading ? (
-          <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-saffron"></div>
+          <div className="loading-container">
+            <div className="loading-spinner animate-spin"></div>
           </div>
         ) : rituals.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="rituals-grid">
             {rituals.map(ritual => (
               <div
                 key={ritual.id}
-                className="group relative bg-white rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col h-full"
+                className="ritual-card"
               >
                 <Link 
                   to={`/ritual/${ritual.id}`} 
-                  className="absolute inset-0 z-0" 
+                  className="ritual-link" 
                   aria-label={`View ${ritual.title}`}
                 />
 
-                <div className="p-5 flex flex-col h-full relative z-10 pointer-events-none">
-                  <div className="flex justify-between items-start gap-4 mb-3">
-                    <h3 className="text-lg font-bold text-slate-900 leading-tight group-hover:text-saffron transition-colors">
+                <div className="card-content">
+                  <div className="card-header">
+                    <h3 className="ritual-title">
                       {ritual.title}
                     </h3>
                     
                     {user?.id === ritual.user_id && (
-                      <div className="flex gap-1.5 pointer-events-auto shrink-0">
+                      <div className="card-actions">
                         <button
                           onClick={(e) => { e.preventDefault(); e.stopPropagation(); navigate(`/ritual/${ritual.id}/edit`); }}
-                          className="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition flex items-center gap-1 text-xs font-medium"
+                          className="edit-btn"
                           title="Edit Ritual"
                         >
                           <Edit size={14} />
@@ -156,7 +124,7 @@ export default function Explore() {
                         </button>
                         <button
                           onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleDelete(ritual.id); }}
-                          className="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition flex items-center gap-1 text-xs font-medium"
+                          className="delete-btn"
                           title="Delete Ritual"
                         >
                           <Trash2 size={14} />
@@ -167,33 +135,33 @@ export default function Explore() {
                   </div>
 
                   {/* Description */}
-                  <p className="text-slate-600 text-sm mb-4 line-clamp-2 flex-grow">
+                  <p className="ritual-description">
                     {ritual.description}
                   </p>
 
-                  <div className="mt-auto space-y-3">
-                    <div className="flex items-center gap-1.5 text-slate-400 text-xs">
+                  <div className="card-footer">
+                    <div className="ritual-location">
                       <MapPin size={14} className="shrink-0" />
-                      <span className="truncate">{ritual.state}</span>
+                      <span className="location-text">{ritual.state}</span>
                     </div>
 
-                    <div className="flex flex-wrap gap-2">
+                    <div className="tags-container">
                       {ritual.tags?.slice(0, 3).map((tag, idx) => (
                         <span
                           key={idx}
-                          className="bg-orange-50 text-orange-600 text-[10px] tracking-wider px-2 py-1 rounded-md border border-orange-100"
+                          className="tag"
                         >
                           {tag}
                         </span>
                       ))}
                     </div>
 
-                    <div className="pt-3 border-t border-slate-50 flex items-center gap-4 text-slate-400">
-                      <div className="flex items-center gap-1 text-xs">
-                        <Heart size={14} className={ritual.likes > 0 ? "text-red-400 fill-red-400" : ""} />
+                    <div className="stats-container">
+                      <div className="stat-item">
+                        <Heart size={14} className={ritual.likes > 0 ? "heart-icon active" : "heart-icon"} />
                         <span>{ritual.likes || 0}</span>
                       </div>
-                      <div className="flex items-center gap-1 text-xs">
+                      <div className="stat-item">
                         <MessageCircle size={14} />
                         <span>{ritual.comments || 0}</span>
                       </div>
@@ -204,13 +172,13 @@ export default function Explore() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-12">
-            <h3 className="text-2xl font-bold text-slate-800 mb-4">No rituals yet</h3>
-            <p className="text-slate-600 mb-6">Be the first to share your family rituals!</p>
+          <div className="no-results">
+            <h3 className="no-results-title">No rituals yet</h3>
+            <p className="no-results-text">Be the first to share your family rituals!</p>
             {user && (
               <Link
                 to="/create"
-                className="bg-saffron text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-500 transition inline-block"
+                className="create-btn"
               >
                 Create a Ritual
               </Link>
@@ -220,18 +188,18 @@ export default function Explore() {
 
         {/* Pagination */}
         {rituals.length > 0 && (
-          <div className="flex justify-center gap-4 mt-12">
+          <div className="pagination">
             <button
               onClick={() => setPage(p => Math.max(1, p - 1))}
               disabled={page === 1}
-              className="px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-100 transition disabled:opacity-50"
+              className="page-btn"
             >
               Previous
             </button>
-            <span className="px-4 py-2">Page {page}</span>
+            <span className="page-info">Page {page}</span>
             <button
               onClick={() => setPage(p => p + 1)}
-              className="px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-100 transition"
+              className="page-btn"
             >
               Next
             </button>

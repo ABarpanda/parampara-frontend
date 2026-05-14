@@ -3,14 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { usersAPI, connectionsAPI, ritualsAPI } from '../services/api';
 import { User, Heart, MapPin, Edit, Trash2 } from 'lucide-react';
+import './Profile.css';
 
 export default function Profile() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [profile, setProfile] = useState(user);
   const [myRituals, setMyRituals] = useState([]);
-  // const [following, setFollowing] = useState([]);
-  // const [followers, setFollowers] = useState([]);
   const [activeTab, setActiveTab] = useState('rituals');
   const [loading, setLoading] = useState(true);
 
@@ -22,19 +21,14 @@ export default function Profile() {
   }, [user]);
 
   const loadProfileData = async () => {
-    if (!user?.id) return; // Guard clause
+    if (!user?.id) return;
     try {
       setLoading(true);
       const [ritualsRes] = await Promise.all([
-      // const [ritualsRes, followingRes, followersRes] = await Promise.all([
         ritualsAPI.getAll(1, 100, { userId: user.id }),
-        // connectionsAPI.getFollowing(),
-        // connectionsAPI.getFollowers()
       ]);
 
       setMyRituals(ritualsRes.data.rituals);
-      // setFollowing(followingRes.data);
-      // setFollowers(followersRes.data);
     } catch (err) {
       console.error('Failed to load profile data:', err);
     } finally {
@@ -42,9 +36,8 @@ export default function Profile() {
     }
   };
 
-  // 4. Loading Guard
   if (!user) {
-    return <div className="p-8 text-center text-slate-600">Loading profile...</div>;
+    return <div className="empty-message">Loading profile...</div>;
   }
 
   const handleDeleteRitual = async (ritualId) => {
@@ -58,7 +51,6 @@ export default function Profile() {
   };
 
   const handleEdit = () => {
-    // Navigate to an edit page or open a modal
     navigate('/profile/edit');
   };
 
@@ -71,12 +63,9 @@ export default function Profile() {
 
     try {
       setLoading(true);
-
       await usersAPI.deleteProfile();
-
       logout();
       navigate('/register', { replace: true });
-
       alert("Profile deleted successfully.");
     } catch (err) {
       alert(
@@ -89,48 +78,46 @@ export default function Profile() {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-8">
-      <div className="max-w-4xl mx-auto px-4">
+    <div className="profile-page">
+      <div className="profile-container">
         {/* Profile Header */}
-        <div className="bg-white rounded-lg shadow-lg p-8 mb-6">
-          <div className="flex items-center gap-6 mb-6">
-            <div className="flex items-center gap-6">
-              <div className="relative w-24 h-24 shrink-0">
+        <div className="profile-header-card">
+          <div className="profile-info-section">
+            <div className="profile-user-info">
+              <div className="profile-pic-container">
                 {user.profile_pic ? (
                   <img 
                     src={user.profile_pic} 
                     alt={user.full_name}
-                    className="w-full h-full rounded-full object-cover border-4 border-white shadow-md"
+                    className="profile-pic"
                   />
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-saffron to-orange-500 rounded-full flex items-center justify-center text-white shadow-md">
+                  <div className="profile-pic-placeholder">
                     <User size={48} strokeWidth={1.5} />
                   </div>
                 )}
               </div>
-              <div>
-                <h1 className="text-2xl font-bold text-slate-800">{user.full_name}</h1>
-                <p className="text-slate-500 text-sm">{user.email}</p>
+              <div className="user-details">
+                <h1>{user.full_name}</h1>
+                <p className="user-email">{user.email}</p>
               </div>
             </div>
             <div>
-              {/* <h1 className="text-3xl font-bold text-slate-800 mb-2">{user.full_name}</h1> */}
-              <p className="text-slate-600 flex items-center gap-2 mb-2">
+              <p className="user-location">
                 <MapPin size={18} />
                 {user.state_name}
               </p>
-              {/* <p className="text-slate-600">Member since {user.created_at}</p> */}
             </div>
-            <div className="flex gap-2">
+            <div className="header-actions">
               <button
                 onClick={handleEdit}
-                className="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition font-medium"
+                className="edit-profile-btn"
               >
                 <Edit size={18} /> Edit
               </button>
               <button
                 onClick={handleDeleteProfile}
-                className="flex items-center gap-2 px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg transition font-medium"
+                className="delete-profile-btn"
               >
                 <Trash2 size={18} /> Delete
               </button>
@@ -138,87 +125,55 @@ export default function Profile() {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-3 gap-4">
-            <div className="bg-gradient-to-br from-saffron/10 to-orange-50 p-4 rounded-lg text-center">
-              <div className="text-2xl font-bold text-saffron">{myRituals.length}</div>
-              <div className="text-sm text-slate-600">Rituals Shared</div>
+          <div className="profile-stats">
+            <div className="stat-card">
+              <div className="stat-value">{myRituals.length}</div>
+              <div className="stat-label">Rituals Shared</div>
             </div>
-            {/* <div className="bg-gradient-to-br from-green/10 to-emerald-50 p-4 rounded-lg text-center">
-              <div className="text-2xl font-bold text-green">{following.length}</div>
-              <div className="text-sm text-slate-600">Following</div>
-            </div>
-            <div className="bg-gradient-to-br from-navy/10 to-blue-50 p-4 rounded-lg text-center">
-              <div className="text-2xl font-bold text-navy">{followers.length}</div>
-              <div className="text-sm text-slate-600">Followers</div> 
-            </div> */}
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          <div className="flex border-b border-slate-200">
+        <div className="profile-tabs-card">
+          <div className="tabs-header">
             <button
               onClick={() => setActiveTab('rituals')}
-              className={`flex-1 py-4 px-6 font-semibold transition ${
-                activeTab === 'rituals'
-                  ? 'text-saffron border-b-2 border-saffron bg-saffron/5'
-                  : 'text-slate-600 hover:text-saffron'
-              }`}
+              className={`tab-btn ${activeTab === 'rituals' ? 'active' : 'inactive'}`}
             >
               My Rituals ({myRituals.length})
             </button>
-            {/* <button
-              onClick={() => setActiveTab('following')}
-              className={`flex-1 py-4 px-6 font-semibold transition ${
-                activeTab === 'following'
-                  ? 'text-saffron border-b-2 border-saffron bg-saffron/5'
-                  : 'text-slate-600 hover:text-saffron'
-              }`}
-            >
-              Following ({following.length})
-            </button> */}
-            {/* <button
-              onClick={() => setActiveTab('followers')}
-              className={`flex-1 py-4 px-6 font-semibold transition ${
-                activeTab === 'followers'
-                  ? 'text-saffron border-b-2 border-saffron bg-saffron/5'
-                  : 'text-slate-600 hover:text-saffron'
-              }`}
-            >
-              Followers ({followers.length})
-            </button> */}
           </div>
 
-          <div className="p-6">
+          <div className="tabs-content">
             {activeTab === 'rituals' && (
               <div>
                 {myRituals.length > 0 ? (
-                  <div className="space-y-4">
+                  <div className="ritual-list">
                     {myRituals.map(ritual => (
                       <div
                         key={ritual.id}
-                        className="border border-slate-200 rounded-lg p-4 hover:shadow-md transition"
+                        className="my-ritual-item"
                       >
-                        <div className="flex justify-between items-start">
+                        <div className="ritual-item-header">
                           <div>
-                            <h3 className="font-bold text-slate-800 mb-2">{ritual.title}</h3>
-                            <p className="text-slate-600 text-sm mb-3 line-clamp-2">{ritual.description}</p>
-                            <div className="flex gap-4 text-sm text-slate-500">
+                            <h3 className="ritual-item-title">{ritual.title}</h3>
+                            <p className="ritual-item-desc">{ritual.description}</p>
+                            <div className="ritual-item-meta">
                               <span>{ritual.region}</span>
                               <span>{ritual.frequency}</span>
                             </div>
                           </div>
-                          <div className="flex gap-2 ml-4">
+                          <div className="ritual-item-actions">
                             <button
                               onClick={() => navigate(`/ritual/${ritual.id}/edit`)}
-                              className="flex items-center gap-2 bg-blue-50 text-blue-600 px-3 py-1 rounded-lg hover:bg-blue-100 transition text-sm"
+                              className="ritual-edit-btn"
                             >
                               <Edit size={16} />
                               Edit
                             </button>
                             <button
                               onClick={() => handleDeleteRitual(ritual.id)}
-                              className="flex items-center gap-2 bg-red-50 text-red-600 px-3 py-1 rounded-lg hover:bg-red-100 transition text-sm"
+                              className="ritual-delete-btn"
                             >
                               <Trash2 size={16} />
                               Delete
@@ -229,64 +184,10 @@ export default function Profile() {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-center text-slate-600 py-8">You haven't shared any rituals yet</p>
+                  <p className="empty-message">You haven't shared any rituals yet</p>
                 )}
               </div>
             )}
-
-            {/* {activeTab === 'following' && (
-              <div>
-                {following.length > 0 ? (
-                  <div className="space-y-4">
-                    {following.map(person => (
-                      <div
-                        key={person.id}
-                        className="flex items-center justify-between border border-slate-200 rounded-lg p-4"
-                      >
-                        <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 bg-saffron rounded-full flex items-center justify-center text-white font-bold">
-                            {person.full_name.charAt(0)}
-                          </div>
-                          <div>
-                            <h4 className="font-semibold text-slate-800">{person.full_name}</h4>
-                            <p className="text-sm text-slate-600">{person.state_name}</p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-center text-slate-600 py-8">You're not following anyone yet</p>
-                )}
-              </div>
-            )}
-
-            {activeTab === 'followers' && (
-              <div>
-                {followers.length > 0 ? (
-                  <div className="space-y-4">
-                    {followers.map(person => (
-                      <div
-                        key={person.id}
-                        className="flex items-center justify-between border border-slate-200 rounded-lg p-4"
-                      >
-                        <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 bg-green rounded-full flex items-center justify-center text-white font-bold">
-                            {person.full_name.charAt(0)}
-                          </div>
-                          <div>
-                            <h4 className="font-semibold text-slate-800">{person.full_name}</h4>
-                            <p className="text-sm text-slate-600">{person.state_name}</p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-center text-slate-600 py-8">You don't have any followers yet</p>
-                )}
-              </div>
-            )} */}
           </div>
         </div>
       </div>

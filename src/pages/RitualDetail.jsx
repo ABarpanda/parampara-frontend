@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { ritualsAPI, usersAPI, connectionsAPI } from '../services/api';
 import { MapPin, Calendar, User, Heart, MessageCircle, Share2, Edit, Trash2 } from 'lucide-react';
+import './RitualDetail.css';
 
 export default function RitualDetail() {
   const { id } = useParams();
@@ -43,19 +44,6 @@ export default function RitualDetail() {
     }
   };
 
-  // const handleFollow = async () => {
-  //   try {
-  //     if (isFollowing) {
-  //       await connectionsAPI.unfollow(ritual.userId);
-  //     } else {
-  //       await connectionsAPI.follow(ritual.userId);
-  //     }
-  //     setIsFollowing(!isFollowing);
-  //   } catch (err) {
-  //     console.error('Failed to follow user:', err);
-  //   }
-  // };
-
   const handleShare = async (ritual) => {
     const shareData = {
       title: ritual.title,
@@ -64,11 +52,9 @@ export default function RitualDetail() {
     };
 
     try {
-      // Check if the browser supports native sharing
       if (navigator.share) {
         await navigator.share(shareData);
       } else {
-        // Fallback: Copy to clipboard
         await navigator.clipboard.writeText(shareData.url);
         alert('Link copied to clipboard!');
       }
@@ -79,20 +65,20 @@ export default function RitualDetail() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-saffron"></div>
+      <div className="loading-container">
+        <div className="loader animate-spin"></div>
       </div>
     );
   }
 
   if (!ritual) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-slate-800 mb-4">Ritual not found</h2>
+      <div className="not-found-container">
+        <div className="not-found-content">
+          <h2 className="detail-title">Ritual not found</h2>
           <button
             onClick={() => navigate('/')}
-            className="text-saffron hover:underline"
+            className="btn-home"
           >
             Go back home
           </button>
@@ -102,30 +88,30 @@ export default function RitualDetail() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-8">
-      <div className="max-w-4xl mx-auto px-4">
+    <div className="ritual-detail-page bg-gradient-body">
+      <div className="detail-container">
         {/* Header */}
-        <div className="bg-white rounded-lg shadow-lg p-8 mb-6">
-          <div className="flex justify-between items-start mb-6">
+        <div className="detail-card">
+          <div className="detail-header">
             <div>
-              <h1 className="text-4xl font-bold text-slate-800 mb-2">{ritual.title}</h1>
-              <div className="flex items-center gap-2 text-slate-600">
+              <h1 className="detail-title">{ritual.title}</h1>
+              <div className="detail-location">
                 <MapPin size={20} />
                 <span>{ritual.state}</span>
               </div>
             </div>
             {user?.id === ritual.user_id && (
-              <div className="flex gap-2">
+              <div className="header-actions">
                 <button
                   onClick={() => navigate(`/ritual/${id}/edit`)}
-                  className="flex items-center gap-2 bg-blue-50 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100 transition"
+                  className="btn-edit-detail"
                 >
                   <Edit size={20} />
                   Edit
                 </button>
                 <button
                   onClick={handleDelete}
-                  className="flex items-center gap-2 bg-red-50 text-red-600 px-4 py-2 rounded-lg hover:bg-red-100 transition"
+                  className="btn-delete-detail"
                 >
                   <Trash2 size={20} />
                   Delete
@@ -136,55 +122,42 @@ export default function RitualDetail() {
 
           {/* Creator Info */}
           {creator && (
-            <div className="flex items-center justify-between bg-gradient-to-r from-saffron/10 to-green/10 p-4 rounded-lg mb-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-saffron rounded-full flex items-center justify-center text-white font-bold">
+            <div className="creator-info-bar">
+              <div className="creator-profile">
+                <div className="creator-avatar">
                   {creator.profile_pic || <User/>}
                 </div>
                 <div>
-                  <h3 className="font-semibold text-slate-800">{creator.full_name}</h3>
-                  <p className="text-sm text-slate-600">{creator.state_name}</p>
+                  <h3 className="creator-name">{creator.full_name}</h3>
+                  <p className="creator-state">{creator.state_name}</p>
                 </div>
               </div>
-              {user?.id !== ritual.userId && user && (
-                // <button
-                //   onClick={handleFollow}
-                //   className={`px-4 py-2 rounded-lg font-semibold transition ${
-                //     isFollowing
-                //       ? 'bg-slate-200 text-slate-800 hover:bg-slate-300'
-                //       : 'bg-saffron text-white hover:bg-orange-500'
-                //   }`}
-                // >
-                //   {isFollowing ? 'Following' : 'Follow'}
-                // </button>
-                <></>
-              )}
             </div>
           )}
 
           {/* Ritual Details */}
-          <div className="grid grid-cols-3 gap-4 mb-6 text-center">
-            <div className="bg-slate-50 p-4 rounded-lg">
-              <div className="text-2xl font-bold text-saffron">{ritual.frequency}</div>
-              <div className="text-sm text-slate-600">Frequency</div>
+          <div className="stats-grid">
+            <div className="stat-box">
+              <div className="stat-value frequency">{ritual.frequency}</div>
+              <div className="stat-label">Frequency</div>
             </div>
-            <div className="bg-slate-50 p-4 rounded-lg">
-              <div className="text-2xl font-bold text-green">{ritual.likes || 0}</div>
-              <div className="text-sm text-slate-600">Likes</div>
+            <div className="stat-box">
+              <div className="stat-value likes">{ritual.likes || 0}</div>
+              <div className="stat-label">Likes</div>
             </div>
-            <div className="bg-slate-50 p-4 rounded-lg">
-              <div className="text-2xl font-bold text-navy">{ritual.comments || 0}</div>
-              <div className="text-sm text-slate-600">Comments</div>
+            <div className="stat-box">
+              <div className="stat-value comments">{ritual.comments || 0}</div>
+              <div className="stat-label">Comments</div>
             </div>
           </div>
 
           {/* Tags */}
           {ritual.tags && ritual.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-6">
+            <div className="tag-list">
               {ritual.tags.map((tag, idx) => (
                 <span
                   key={idx}
-                  className="bg-saffron/10 text-saffron px-4 py-2 rounded-full text-sm font-medium"
+                  className="detail-tag"
                 >
                   #{tag}
                 </span>
@@ -193,34 +166,34 @@ export default function RitualDetail() {
           )}
 
           {/* Description */}
-          <div className="mb-6">
-            <h2 className="text-xl font-bold text-slate-800 mb-3">Ritual Description</h2>
-            <p className="text-slate-700 leading-relaxed">{ritual.description}</p>
+          <div className="detail-section">
+            <h2 className="section-title">Ritual Description</h2>
+            <p className="description-text">{ritual.description}</p>
           </div>
 
           {/* Significance */}
           {ritual.significance && (
-            <div className="mb-6">
-              <h2 className="text-xl font-bold text-slate-800 mb-3">Significance</h2>
-              <div className="bg-gradient-to-r from-green/5 to-navy/5 p-4 rounded-lg border-l-4 border-green">
-                <p className="text-slate-700">{ritual.significance}</p>
+            <div className="detail-section">
+              <h2 className="section-title">Significance</h2>
+              <div className="significance-box">
+                <p className="description-text">{ritual.significance}</p>
               </div>
             </div>
           )}
 
           {/* Actions */}
-          <div className="flex gap-4 pt-6 border-t border-slate-200">
-            <button className="flex items-center gap-2 px-4 py-2 text-slate-600 hover:text-saffron transition">
+          <div className="actions-footer">
+            <button className="btn-action-footer">
               <Heart size={20} />
               <span>Like</span>
             </button>
-            <button className="flex items-center gap-2 px-4 py-2 text-slate-600 hover:text-saffron transition">
+            <button className="btn-action-footer">
               <MessageCircle size={20} />
               <span>Comment</span>
             </button>
             <button 
               onClick={() => handleShare(ritual)}
-              className="flex items-center gap-2 px-4 py-2 text-slate-600 hover:text-saffron transition"
+              className="btn-action-footer"
             >
               <Share2 size={20} />
               <span>Share</span>
@@ -229,9 +202,9 @@ export default function RitualDetail() {
         </div>
 
         {/* Similar Rituals */}
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <h2 className="text-2xl font-bold text-slate-800 mb-4">Similar Rituals</h2>
-          <p className="text-slate-600">More rituals from this category coming soon...</p>
+        <div className="similar-rituals-card">
+          <h2 className="section-title">Similar Rituals</h2>
+          <p className="creator-state">More rituals from this category coming soon...</p>
         </div>
       </div>
     </div>

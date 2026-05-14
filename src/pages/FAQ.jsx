@@ -1,29 +1,26 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import './FAQ.css';
 
 function FAQItem({ question, answer, defaultOpen = false }) {
   const [open, setOpen] = useState(defaultOpen);
 
   return (
-    <div className="border border-slate-200 rounded-lg overflow-hidden transition">
+    <div className="faq-item">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex justify-between items-center px-6 py-4 bg-slate-100 hover:bg-slate-200 transition"
+        className="faq-question-btn"
       >
-        <h3 className="text-lg font-medium text-slate-800">{question}</h3>
+        <h3 className="faq-question">{question}</h3>
         <ChevronDown
-          className={`transition-transform duration-300 ${
-            open ? "rotate-180" : ""
-          }`}
+          className={`chevron-icon ${open ? "open" : ""}`}
         />
       </button>
 
       <div
-        className={`transition-all duration-500 ease-in-out overflow-hidden ${
-          open ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
-        }`}
+        className={`faq-answer-container ${open ? "open" : "closed"}`}
       >
-        <div className="p-6 text-slate-700 leading-relaxed">
+        <div className="faq-answer">
           {answer}
         </div>
       </div>
@@ -33,10 +30,10 @@ function FAQItem({ question, answer, defaultOpen = false }) {
 
 export default function FAQ() {
   return (
-    <div className="min-h-screen bg-slate-50 py-16 px-4">
-      <div className="max-w-4xl mx-auto space-y-6">
+    <div className="faq-page">
+      <div className="faq-container">
 
-        <h1 className="text-4xl font-bold text-center text-slate-800 mb-8">
+        <h1 className="faq-title">
           Frequently Asked Questions
         </h1>
 
