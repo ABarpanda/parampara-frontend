@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { ritualsAPI } from '../services/api';
-import { Heart, MessageCircle, Share2, MapPin, Edit, Trash2 } from 'lucide-react';
+import { Heart, MessageCircle, Share2, MapPin, Edit, Trash2, ChevronDown, Clock, ArrowRight, User as UserIcon } from 'lucide-react';
 import './Home.css';
 
 export default function Home() {
+  // ... existing state and effects ...
   const { user } = useAuth();
   const navigate = useNavigate();
   const [rituals, setRituals] = useState([]);
@@ -28,6 +29,21 @@ export default function Home() {
     }
   };
 
+  const calculateReadTime = (text) => {
+    const wordsPerMinute = 200;
+    const words = text ? text.split(/\s+/).length : 0;
+    const minutes = Math.ceil(words / wordsPerMinute);
+    return minutes;
+  };
+
+  const earthTones = [
+    '#4a5d23', // forest green
+    '#92400e', // deep orange/brown
+    '#7f1d1d', // deep red
+    '#1e3a8a', // deep blue
+    '#5b21b6', // deep purple
+  ];
+
   const handleDelete = async (ritualId) => {
     if (!window.confirm('Are you sure you want to delete this ritual?')) return;
     try {
@@ -44,7 +60,7 @@ export default function Home() {
       {!user && (
         <section className="hero-section bg-gradient-primary">
           <div className="max-container hero-content">
-            <h1 className="hero-title">परंपरा - Parampara</h1>
+            <h1 className="hero-title">परंपरा</h1>
             <p className="hero-subtitle">Discover, Share, and Preserve Family Rituals & Traditions</p>
             <div className="hero-actions">
               <Link
@@ -61,6 +77,9 @@ export default function Home() {
               </Link>
             </div>
           </div>
+          <div className="scroll-indicator">
+            <ChevronDown size={32} />
+          </div>
         </section>
       )}
 
@@ -69,7 +88,7 @@ export default function Home() {
         {user && (
           <div className="welcome-section">
             <h2 className="welcome-title">Welcome, {user.full_name}!</h2>
-            <p className="welcome-subtitle">Discover your rituals from the community</p>
+            <p className="welcome-subtitle">Discover stories from the community</p>
           </div>
         )}
 
@@ -80,7 +99,7 @@ export default function Home() {
           </div>
         ) : rituals.length > 0 ? (
           <div className="rituals-grid">
-            {rituals.map(ritual => (
+            {rituals.map((ritual, index) => (
               <div
                 key={ritual.id}
                 className="ritual-card"
@@ -131,7 +150,7 @@ export default function Home() {
                     </div>
 
                     <div className="ritual-tags">
-                      {ritual.tags?.slice(0, 3).map((tag, idx) => (
+                      {ritual.tags?.slice(0, 2).map((tag, idx) => (
                         <span
                           key={idx}
                           className="ritual-tag"

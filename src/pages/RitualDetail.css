@@ -10,7 +10,7 @@
 }
 
 .detail-card {
-  background-color: var(--color-white);
+  background-color: #cbffbd;
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-lg);
   padding: var(--spacing-8);
