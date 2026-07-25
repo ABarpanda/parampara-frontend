@@ -90,8 +90,8 @@ export default function RitualDetail() {
   return (
     <div className="ritual-detail-page bg-gradient-body">
       <div className="detail-container">
-        {/* Header */}
         <div className="detail-card">
+          {/* Header */}
           <div className="detail-header">
             <div>
               <h1 className="detail-title">{ritual.title}</h1>
@@ -125,7 +125,15 @@ export default function RitualDetail() {
             <div className="creator-info-bar">
               <div className="creator-profile">
                 <div className="creator-avatar">
-                  {creator.profile_pic || <User/>}
+                  {creator.profile_pic ? (
+                    <img
+                      src={creator.profile_pic}
+                      alt={creator.full_name}
+                      className="creator-avatar-img"
+                    />
+                  ) : (
+                    <User />
+                  )}
                 </div>
                 <div>
                   <h3 className="creator-name">{creator.full_name}</h3>
